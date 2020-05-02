@@ -14,11 +14,17 @@ struct InstallTemplatesCommand: ParsableCommand {
         case invalidArguments
     }
 
+    @Option(name: .shortAndLong)
+    var localPath: String?
+
     @Option(name: .shortAndLong, default: "https://github.com/gaetanzanella/XCTemplate.git")
-    var url: String
+    var url: String?
 
     @Option(name: .shortAndLong, default: "FABERNOVEL")
     var nameSpace: String
+
+    @Option(name: .shortAndLong, default: "XCTemplate")
+    var sourceDirectory: String
 
     @Option(name: .shortAndLong)
     var tag: String?
@@ -40,17 +46,15 @@ struct InstallTemplatesCommand: ParsableCommand {
         defer {
             try? fileManager.removeItem(at: workingDirectory)
         }
-        let templatesUrl = workingDirectory.appendingPathComponent("XCTemplate")
-        let command: ShellCommand
-        if let tag = tag {
-            command = .gitDownload(url: url, reference: .tag(tag), destionation: templatesUrl.path)
-        } else if let branch = branch {
-            command = .gitDownload(url: url, reference: .branch(branch), destionation: templatesUrl.path)
+        let templatesUrl: URL
+        if let local = localPath {
+            templatesUrl = URL(fileURLWithPath: local)
+        } else if let url = url {
+            templatesUrl = workingDirectory.appendingPathComponent(sourceDirectory)
+            try downloadTemplates(fromURL: url, at: templatesUrl)
         } else {
             throw Error.invalidArguments
         }
-        let shell = Shell()
-        try shell.execute(command)
         let urls = try fileManager.contentsOfDirectory(
             at: templatesUrl,
             includingPropertiesForKeys: nil,
@@ -64,5 +68,20 @@ struct InstallTemplatesCommand: ParsableCommand {
             let folderDestination = target.appendingPathComponent(folder.lastPathComponent)
             try fileManager.copyItem(at: folder, to: folderDestination)
         }
+    }
+
+    // MARK: - Private
+
+    private func downloadTemplates(fromURL url: String, at location: URL) throws {
+        let command: ShellCommand
+        if let tag = tag {
+            command = .gitDownload(url: url, reference: .tag(tag), destionation: location.path)
+        } else if let branch = branch {
+            command = .gitDownload(url: url, reference: .branch(branch), destionation: location.path)
+        } else {
+            throw Error.invalidArguments
+        }
+        let shell = Shell()
+        try shell.execute(command)
     }
 }
