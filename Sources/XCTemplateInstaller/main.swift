@@ -1,0 +1,2 @@
+
+XCTemplateInstallerCommand.main()
