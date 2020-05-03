@@ -4,26 +4,26 @@
 import PackageDescription
 
 let package = Package(
-    name: "XCTemplateInstaller",
+    name: "XCTemplate",
     platforms: [
         .macOS(.v10_14),
     ],
     products: [
-        .executable(name: "xctemplate", targets: ["XCTemplateInstaller"])
+        .executable(name: "xctemplate", targets: ["XCTemplate"])
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.5")
     ],
     targets: [
         .target(
-            name: "XCTemplateInstaller",
+            name: "XCTemplate",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),
         .testTarget(
-            name: "XCTemplateInstallerTests",
-            dependencies: ["XCTemplateInstaller"]
+            name: "XCTemplateTests",
+            dependencies: ["XCTemplate"]
         ),
     ]
 )
