@@ -12,7 +12,7 @@ struct ListTemplatesCommand: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        help: "The template namespace to list."
+        help: "The template namespace to list. All namespaces are listed if not specified."
     )
     var namespace: String?
 
