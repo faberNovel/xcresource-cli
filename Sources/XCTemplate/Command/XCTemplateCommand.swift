@@ -12,7 +12,7 @@ struct XCTemplateCommand: ParsableCommand {
 
     static let configuration = CommandConfiguration(
         commandName: "xctemplate",
-        abstract: "A Swift command-line tool to manage Xcode templates",
+        abstract: "A Swift command-line tool to manage Xcode templates.",
         subcommands: [
             InstallTemplatesCommand.self,
             RemoveTemplatesCommand.self,

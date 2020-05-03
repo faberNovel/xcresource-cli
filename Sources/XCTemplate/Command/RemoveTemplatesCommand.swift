@@ -19,7 +19,7 @@ struct RemoveTemplatesCommand: ParsableCommand {
 
     public static let configuration = CommandConfiguration(
         commandName: "remove",
-        abstract: "Remove Xcode templates"
+        abstract: "Remove Xcode templates."
     )
 
     private var fileManager: FileManager { .default }

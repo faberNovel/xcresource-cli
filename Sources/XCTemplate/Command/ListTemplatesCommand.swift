@@ -18,7 +18,7 @@ struct ListTemplatesCommand: ParsableCommand {
 
     public static let configuration = CommandConfiguration(
         commandName: "list",
-        abstract: "List Xcode templates"
+        abstract: "List Xcode templates."
     )
 
     private var fileManager: FileManager { .default }

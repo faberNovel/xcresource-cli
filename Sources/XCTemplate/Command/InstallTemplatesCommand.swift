@@ -17,7 +17,7 @@ struct InstallTemplatesCommand: ParsableCommand {
     @Option(
         name: .shortAndLong,
         default: "https://github.com/gaetanzanella/XCTemplate.git",
-        help: "The templates repository url"
+        help: "The templates repository url."
     )
     var url: String
 
@@ -31,26 +31,26 @@ struct InstallTemplatesCommand: ParsableCommand {
     @Option(
         name: .shortAndLong,
         default: "XCTemplate",
-        help: "The templates directory path inside the repository"
+        help: "The templates directory path inside the repository."
     )
-    var sourcePath: String
+    var templatesPath: String
 
     @Option(
         name: .shortAndLong,
-        help: "The tag target"
+        help: "The tag target."
     )
     var tag: String?
 
     @Option(
         name: .shortAndLong,
         default: "master",
-        help: "The branch target"
+        help: "The branch target."
     )
     var branch: String?
 
     public static let configuration = CommandConfiguration(
         commandName: "install",
-        abstract: "Install Xcode templates"
+        abstract: "Install Xcode templates."
     )
 
     private var fileManager: FileManager { .default }
@@ -63,9 +63,10 @@ struct InstallTemplatesCommand: ParsableCommand {
             try? fileManager.removeItem(at: workingDirectory)
         }
         let repositoryUrl = workingDirectory
+        print("Cloning \(url) templates…")
         try downloadTemplates(fromURL: url, at: repositoryUrl)
         let templateUrls = try fileManager.contentsOfDirectory(
-            at: repositoryUrl.appendingPathComponent(sourcePath),
+            at: repositoryUrl.appendingPathComponent(templatesPath),
             includingPropertiesForKeys: nil,
             options: .skipsHiddenFiles
         )
@@ -76,6 +77,8 @@ struct InstallTemplatesCommand: ParsableCommand {
             let folderDestination = target.appendingPathComponent(folder.lastPathComponent)
             try fileManager.copyItem(at: folder, to: folderDestination)
         }
+        let count = (try? countTemplates(at: target)) ?? 0
+        print("Successfully installed \(count) templates 🎉")
     }
 
     // MARK: - Private
@@ -91,5 +94,22 @@ struct InstallTemplatesCommand: ParsableCommand {
         }
         let shell = Shell()
         try shell.execute(command)
+    }
+
+    private func countTemplates(at url: URL) throws -> Int {
+        if url.isTemplate {
+            return 1
+        }
+        if url.hasDirectoryPath {
+            return try fileManager.contentsOfDirectory(
+                at: url,
+                includingPropertiesForKeys: nil
+            )
+                .reduce(into: 0, { r, url in
+                    r += try countTemplates(at: url)
+                }
+            )
+        }
+        return 0
     }
 }
