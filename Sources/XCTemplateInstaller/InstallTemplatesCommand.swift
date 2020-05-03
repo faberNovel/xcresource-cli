@@ -14,27 +14,43 @@ struct InstallTemplatesCommand: ParsableCommand {
         case invalidArguments
     }
 
-    @Option(name: .shortAndLong)
-    var localPath: String?
+    @Option(
+        name: .shortAndLong,
+        default: "https://github.com/gaetanzanella/XCTemplate.git",
+        help: "The templates repository url"
+    )
+    var url: String
 
-    @Option(name: .shortAndLong, default: "https://github.com/gaetanzanella/XCTemplate.git")
-    var url: String?
+    @Option(
+        name: .shortAndLong,
+        default: "FABERNOVEL",
+        help: "A namespace acts as a folder. The templates will be installed inside it. If the namespace already exists, it is replaced."
+    )
+    var namespace: String
 
-    @Option(name: .shortAndLong, default: "FABERNOVEL")
-    var nameSpace: String
+    @Option(
+        name: .shortAndLong,
+        default: "XCTemplate",
+        help: "The templates directory path inside the repository"
+    )
+    var sourcePath: String
 
-    @Option(name: .shortAndLong, default: "XCTemplate")
-    var sourceDirectory: String
-
-    @Option(name: .shortAndLong)
+    @Option(
+        name: .shortAndLong,
+        help: "The tag target"
+    )
     var tag: String?
 
-    @Option(name: .shortAndLong, default: "master")
+    @Option(
+        name: .shortAndLong,
+        default: "master",
+        help: "The branch target"
+    )
     var branch: String?
 
     public static let configuration = CommandConfiguration(
         commandName: "install",
-        abstract: "Generate a blog post banner from the given input"
+        abstract: "Install Xcode templates"
     )
 
     private var fileManager: FileManager { .default }
@@ -46,25 +62,17 @@ struct InstallTemplatesCommand: ParsableCommand {
         defer {
             try? fileManager.removeItem(at: workingDirectory)
         }
-        let templatesUrl: URL
-        if let local = localPath {
-            templatesUrl = URL(fileURLWithPath: local)
-        } else if let url = url {
-            templatesUrl = workingDirectory.appendingPathComponent(sourceDirectory)
-            try downloadTemplates(fromURL: url, at: templatesUrl)
-        } else {
-            throw Error.invalidArguments
-        }
-        let urls = try fileManager.contentsOfDirectory(
-            at: templatesUrl,
+        let repositoryUrl = workingDirectory
+        try downloadTemplates(fromURL: url, at: repositoryUrl)
+        let templateUrls = try fileManager.contentsOfDirectory(
+            at: repositoryUrl.appendingPathComponent(sourcePath),
             includingPropertiesForKeys: nil,
             options: .skipsHiddenFiles
         )
-        let root = fileManager.url(for: .xcodeDestination)
-        let target = root.appendingPathComponent(nameSpace)
+        let target = fileManager.url(for: .templates(namespace: namespace))
         try? fileManager.removeItem(at: target)
         try fileManager.createDirectory(at: target, withIntermediateDirectories: true)
-        try urls.forEach { folder in
+        try templateUrls.forEach { folder in
             let folderDestination = target.appendingPathComponent(folder.lastPathComponent)
             try fileManager.copyItem(at: folder, to: folderDestination)
         }

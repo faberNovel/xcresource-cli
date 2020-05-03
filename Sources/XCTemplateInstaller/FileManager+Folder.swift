@@ -11,6 +11,7 @@ extension FileManager {
 
     enum Folder {
         case xcodeDestination
+        case templates(namespace: String)
         case workingDirectory
     }
 
@@ -19,7 +20,15 @@ extension FileManager {
         let home = homeDirectoryForCurrentUser
         switch folder {
         case .xcodeDestination:
-            url = URL(fileURLWithPath: "Library/Developer/Xcode/Templates/", relativeTo: home)
+            url = URL(
+                fileURLWithPath: "Library/Developer/Xcode/Templates",
+                relativeTo: home
+            )
+        case let .templates(namespace):
+            url = URL(
+                fileURLWithPath: "Library/Developer/Xcode/Templates",
+                relativeTo: home
+            ).appendingPathComponent(namespace)
         case .workingDirectory:
             url = temporaryDirectory.appendingPathComponent("XCTemplateInstaller")
         }
