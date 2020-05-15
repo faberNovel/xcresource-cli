@@ -33,6 +33,10 @@ struct ListTemplatesCommand: ParsableCommand {
             source = fileManager.url(for: .xcodeDestination)
         }
         try listTemplate(at: source, depth: 0)
+        let count = (try? CountTemplatesCommand(url: source).countTemplates()) ?? 0
+        if count == 0 {
+            print("No template installed")
+        }
     }
 
     private func listTemplate(at url: URL, depth: Int) throws {
