@@ -59,6 +59,7 @@ struct InstallTemplatesCommand: ParsableCommand {
 
     func run() throws {
         let workingDirectory = fileManager.url(for: .workingDirectory)
+        try? fileManager.removeItem(at: workingDirectory)
         defer {
             try? fileManager.removeItem(at: workingDirectory)
         }
@@ -77,7 +78,7 @@ struct InstallTemplatesCommand: ParsableCommand {
             let folderDestination = target.appendingPathComponent(folder.lastPathComponent)
             try fileManager.copyItem(at: folder, to: folderDestination)
         }
-        let count = (try? countTemplates(at: target)) ?? 0
+        let count = (try? CountTemplatesCommand(url: target).countTemplates()) ?? 0
         print("Successfully installed \(count) templates 🎉")
     }
 
@@ -94,22 +95,5 @@ struct InstallTemplatesCommand: ParsableCommand {
         }
         let shell = Shell()
         try shell.execute(command)
-    }
-
-    private func countTemplates(at url: URL) throws -> Int {
-        if url.isTemplate {
-            return 1
-        }
-        if url.hasDirectoryPath {
-            return try fileManager.contentsOfDirectory(
-                at: url,
-                includingPropertiesForKeys: nil
-            )
-                .reduce(into: 0, { r, url in
-                    r += try countTemplates(at: url)
-                }
-            )
-        }
-        return 0
     }
 }
