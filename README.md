@@ -13,7 +13,7 @@ A Xcode template manager.
 Run the following command to install using Homebrew:
 
 ```
-$ brew install gaetanzanella/formulae/xctemplate
+$ brew install faberNovel/formulae/xctemplate
 ```
 
 ### Manually
