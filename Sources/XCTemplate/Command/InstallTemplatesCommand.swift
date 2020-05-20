@@ -16,7 +16,7 @@ struct InstallTemplatesCommand: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        default: "https://github.com/gaetanzanella/XCTemplate.git",
+        default: "https://github.com/faberNovel/XCTemplate.git",
         help: "The templates repository url."
     )
     var url: String
@@ -24,7 +24,7 @@ struct InstallTemplatesCommand: ParsableCommand {
     @Option(
         name: .shortAndLong,
         default: "FABERNOVEL",
-        help: "A namespace acts as a folder. The templates will be installed inside it. If the namespace already exists, it is replaced."
+        help: "A namespace acts as an installation folder. The templates will be installed inside it. If the namespace already exists, it is replaced."
     )
     var namespace: String
 
