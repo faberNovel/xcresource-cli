@@ -5,7 +5,7 @@ A Xcode template manager.
 ## Requirements
 
 - Swift 5.2
-- Xcode 11.4 or later
+- **Xcode 11.4** or later
 
 ## Installation
 
@@ -15,6 +15,12 @@ Run the following command to install using Homebrew:
 
 ```
 $ brew install faberNovel/formulae/xctemplate
+```
+(this will also install the `cmake` dependency)
+
+To uninstall it:
+```
+$ brew uninstall xctemplate
 ```
 
 ### Manually
@@ -50,13 +56,15 @@ OVERVIEW: Install Xcode templates.
 USAGE: xctemplate install [--url <url>] [--namespace <namespace>] [--templates-path <templates-path>] [--tag <tag>] [--branch <branch>]
 
 OPTIONS:
-  -u, --url <url>         The templates repository url. (default: https://github.com/faberNovel/XCTemplate.git)
+  -u, --url <url>         The templates Git repository url. <url> can be a local directory path: ./src/my_template_repo (default: https://github.com/faberNovel/CodeSnippet_iOS.git)
   -n, --namespace <namespace>
-                          A namespace acts as an installation folder. The templates will be installed inside it. If the namespace already exists, it is replaced. (default: FABERNOVEL)
+                          Namespaces are not visible in Xcode. A namespace acts as an installation folder.
+                          The templates will be installed inside it. If the namespace already exists, it is replaced.
+                          (default: FABERNOVEL)
   -t, --templates-path <templates-path>
-                          The templates directory path inside the repository. (default: XCTemplate)
-  -t, --tag <tag>         The tag target.
-  -b, --branch <branch>   The branch target. (default: master)
+                          The templates subdirectory path inside the repository. (default: XCTemplate)
+  -b, --branch <branch>   The targeted repo branch (default: master).                          
+  -t, --tag <tag>         The targeted repo tag.
   -h, --help              Show help information.
 ```
 
