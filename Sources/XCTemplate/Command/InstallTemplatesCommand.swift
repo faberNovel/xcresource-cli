@@ -16,37 +16,37 @@ struct InstallTemplatesCommand: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        default: "https://github.com/faberNovel/XCTemplate.git",
-        help: "The templates repository url."
+        default: "https://github.com/faberNovel/CodeSnippet_iOS.git",
+        help: "The templates Git repository url. <url> can be a local directory path: ./src/my_template_repo"
     )
     var url: String
 
     @Option(
         name: .shortAndLong,
         default: "FABERNOVEL",
-        help: "A namespace acts as an installation folder. The templates will be installed inside it. If the namespace already exists, it is replaced."
+        help: "Namespaces are not visible in Xcode. A namespace acts as an installation folder. The templates will be installed inside it. If the namespace already exists, it is replaced."
     )
     var namespace: String
 
     @Option(
         name: .shortAndLong,
         default: "XCTemplate",
-        help: "The templates directory path inside the repository."
+        help: "The templates subdirectory path inside the repository."
     )
     var templatesPath: String
 
     @Option(
         name: .shortAndLong,
-        help: "The tag target."
+        default: "master",
+        help: "The targeted repo branch"
     )
-    var tag: String?
+    var branch: String?
 
     @Option(
         name: .shortAndLong,
-        default: "master",
-        help: "The branch target."
+        help: "The targeted repo tag."
     )
-    var branch: String?
+    var tag: String?
 
     public static let configuration = CommandConfiguration(
         commandName: "install",
