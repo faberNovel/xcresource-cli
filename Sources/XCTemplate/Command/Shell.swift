@@ -7,9 +7,7 @@
 
 import Foundation
 
-enum GitReference {
-    case branch(String), tag(String)
-}
+typealias GitReference = String
 
 enum ShellCommand {
     case gitDownload(url: String, reference: GitReference, destionation: String)
@@ -49,12 +47,7 @@ private extension ShellCommand {
     func shell() -> String {
         switch self {
         case let .gitDownload(url, reference, destination):
-            switch reference {
-            case let .branch(branch):
-                return "git clone -b '\(branch)' --single-branch --depth 1 \(url) \(destination)"
-            case let .tag(tag):
-                return "git clone -b '\(tag)' --single-branch --depth 1 \(url) \(destination)"
-            }
+            return "git clone -b '\(reference)' --single-branch --depth 1 \(url) \(destination)"
         }
     }
 }

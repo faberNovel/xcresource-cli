@@ -53,18 +53,15 @@ SUBCOMMANDS:
 ```
 OVERVIEW: Install Xcode templates.
 
-USAGE: xctemplate install [--url <url>] [--namespace <namespace>] [--templates-path <templates-path>] [--tag <tag>] [--branch <branch>]
+USAGE: xctemplate install [--url <url>] [--namespace <namespace>] [--templates-path <templates-path>] [--pointer <pointer>]
 
 OPTIONS:
   -u, --url <url>         The templates Git repository url. <url> can be a local directory path: ./src/my_template_repo (default: https://github.com/faberNovel/CodeSnippet_iOS.git)
   -n, --namespace <namespace>
-                          Namespaces are not visible in Xcode. A namespace acts as an installation folder.
-                          The templates will be installed inside it. If the namespace already exists, it is replaced.
-                          (default: FABERNOVEL)
+                          Namespaces are not visible in Xcode. A namespace acts as an installation folder. The templates will be installed inside it. If the namespace already exists, it is replaced. (default: FABERNOVEL)
   -t, --templates-path <templates-path>
                           The templates subdirectory path inside the repository. (default: XCTemplate)
-  -b, --branch <branch>   The targeted repo branch (default: master).                          
-  -t, --tag <tag>         The targeted repo tag.
+  -p, --pointer <pointer> The targeted repo pointer (branch or tag) (default: master)
   -h, --help              Show help information.
 ```
 
