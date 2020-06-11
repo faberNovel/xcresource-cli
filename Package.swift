@@ -12,7 +12,7 @@ let package = Package(
         .executable(name: "xctemplate", targets: ["XCTemplate"])
     ],
     dependencies: [
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.0.5")
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "0.1.0")
     ],
     targets: [
         .target(
