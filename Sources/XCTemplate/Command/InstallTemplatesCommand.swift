@@ -10,10 +10,6 @@ import ArgumentParser
 
 struct InstallTemplatesCommand: ParsableCommand {
 
-    enum Error: Swift.Error {
-        case invalidArguments
-    }
-
     @Option(
         name: .shortAndLong,
         default: "https://github.com/faberNovel/CodeSnippet_iOS.git",
