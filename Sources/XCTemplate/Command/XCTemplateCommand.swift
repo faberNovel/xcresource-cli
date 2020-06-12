@@ -16,7 +16,8 @@ struct XCTemplateCommand: ParsableCommand {
         subcommands: [
             InstallTemplatesCommand.self,
             RemoveTemplatesCommand.self,
-            ListTemplatesCommand.self
+            ListTemplatesCommand.self,
+            OpenTemplatesCommand.self
         ]
     )
 }
