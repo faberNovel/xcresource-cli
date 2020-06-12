@@ -10,6 +10,7 @@ import Foundation
 typealias GitReference = String
 
 enum ShellCommand {
+    case open(path: String)
     case gitDownload(url: String, reference: GitReference, destionation: String)
 }
 
@@ -48,6 +49,8 @@ private extension ShellCommand {
         switch self {
         case let .gitDownload(url, reference, destination):
             return "git clone -b '\(reference)' --single-branch --depth 1 \(url) \(destination)"
+        case let .open(path):
+            return "open \(path)"
         }
     }
 }
