@@ -14,7 +14,7 @@ A Xcode template manager.
 Run the following command to install using Homebrew:
 
 ```
-$ brew install faberNovel/formulae/xctemplate
+$ brew install fabernovel/formulae/xctemplate
 ```
 (this will also install the `cmake` dependency)
 
@@ -46,6 +46,9 @@ SUBCOMMANDS:
   install                 Install Xcode templates.
   remove                  Remove Xcode templates.
   list                    List Xcode templates.
+  open                    Open Xcode templates folder.
+
+  See 'xctemplate help <subcommand>' for detailed help.
   ```
 
 ### xctemplate install
@@ -90,5 +93,16 @@ USAGE: xctemplate remove [--namespace <namespace>]
 OPTIONS:
   -n, --namespace <namespace>
                           The template namespace to delete. (default: FABERNOVEL)
+  -h, --help              Show help information.
+```
+
+### xctemplate open
+
+```
+OVERVIEW: Open Xcode templates folder.
+
+USAGE: xctemplate open
+
+OPTIONS:
   -h, --help              Show help information.
 ```
