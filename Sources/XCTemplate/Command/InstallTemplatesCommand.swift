@@ -10,10 +10,6 @@ import ArgumentParser
 
 struct InstallTemplatesCommand: ParsableCommand {
 
-    enum Error: Swift.Error {
-        case invalidArguments
-    }
-
     @Option(
         name: .shortAndLong,
         default: "https://github.com/faberNovel/CodeSnippet_iOS.git",
@@ -38,15 +34,9 @@ struct InstallTemplatesCommand: ParsableCommand {
     @Option(
         name: .shortAndLong,
         default: "master",
-        help: "The targeted repo branch"
+        help: "The targeted repo pointer (branch or tag)"
     )
-    var branch: String?
-
-    @Option(
-        name: .shortAndLong,
-        help: "The targeted repo tag."
-    )
-    var tag: String?
+    var pointer: String
 
     public static let configuration = CommandConfiguration(
         commandName: "install",
@@ -85,14 +75,7 @@ struct InstallTemplatesCommand: ParsableCommand {
     // MARK: - Private
 
     private func downloadTemplates(fromURL url: String, at location: URL) throws {
-        let command: ShellCommand
-        if let tag = tag {
-            command = .gitDownload(url: url, reference: .tag(tag), destionation: location.path)
-        } else if let branch = branch {
-            command = .gitDownload(url: url, reference: .branch(branch), destionation: location.path)
-        } else {
-            throw Error.invalidArguments
-        }
+        let command: ShellCommand = .gitDownload(url: url, reference: pointer, destionation: location.path)
         let shell = Shell()
         try shell.execute(command)
     }
