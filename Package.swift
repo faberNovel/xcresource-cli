@@ -9,14 +9,16 @@ let package = Package(
         .macOS(.v10_14),
     ],
     products: [
-        .executable(name: "xctemplate", targets: ["XCTemplate"])
+        .executable(name: "xctemplate", targets: ["CLI"]),
+        .library(name: "XCTemplate", targets: ["XCTemplate"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.4.1")
     ],
     targets: [
+        .target(name: "XCTemplate", dependencies: []),
         .target(
-            name: "XCTemplate",
+            name: "CLI",
             dependencies: [
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]

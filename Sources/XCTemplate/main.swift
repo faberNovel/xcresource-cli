@@ -1,2 +1,0 @@
-
-XCTemplateCommand.main()
