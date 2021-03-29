@@ -12,10 +12,9 @@ struct RemoveTemplatesCommand: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        default: "FABERNOVEL",
         help: "The template namespace to delete."
     )
-    var namespace: String
+    var namespace: String = "FABERNOVEL"
 
     public static let configuration = CommandConfiguration(
         commandName: "remove",
