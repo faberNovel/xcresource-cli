@@ -106,3 +106,11 @@ USAGE: xctemplate open
 OPTIONS:
   -h, --help              Show help information.
 ```
+
+## Contributing
+
+### To test
+
+```
+make install
+```
