@@ -20,6 +20,7 @@ let package = Package(
         .target(
             name: "CLI",
             dependencies: [
+                "XCTemplate",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),

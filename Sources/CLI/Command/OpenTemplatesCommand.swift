@@ -7,6 +7,7 @@
 
 import Foundation
 import ArgumentParser
+import XCTemplate
 
 struct OpenTemplatesCommand: ParsableCommand {
 
@@ -15,8 +16,12 @@ struct OpenTemplatesCommand: ParsableCommand {
         abstract: "Open Xcode templates folder."
     )
 
+    private var fileManager: FileManager { .default }
+
     func run() throws {
-        let url = FileManager.default.url(for: .xcodeDestination)
-        try Shell().execute(.open(path: url.path))
+        try XCTemplate.OpenTemplatesCommand(
+            urlProvider: fileManager
+        )
+        .run()
     }
 }

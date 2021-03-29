@@ -7,15 +7,21 @@
 
 import Foundation
 
-struct CountTemplatesCommand {
+public struct CountTemplatesCommand {
 
-    let url: URL
+    public let url: URL
+    private let fileManager: FileManager
 
-    private var fileManager: FileManager { .default }
+    // MARK: - Life Cycle
+
+    public init(url: URL, fileManager: FileManager) {
+        self.url = url
+        self.fileManager = fileManager
+    }
 
     // MARK: - Public
 
-    func countTemplates() throws -> Int {
+    public func countTemplates() throws -> Int {
         try recursivelyCountTemplates(at: url)
     }
 

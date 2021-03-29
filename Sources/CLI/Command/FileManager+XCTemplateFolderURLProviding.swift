@@ -1,21 +1,16 @@
 //
-//  FileManager+Folder.swift
+//  FileManager+XCTemplateFolderURLProviding.swift
 //  
 //
-//  Created by Gaétan Zanella on 30/04/2020.
+//  Created by Gaétan Zanella on 29/03/2021.
 //
 
 import Foundation
+import XCTemplate
 
-extension FileManager {
+extension FileManager: XCTemplateFolderURLProviding {
 
-    enum Folder {
-        case xcodeDestination
-        case templates(namespace: String)
-        case workingDirectory
-    }
-
-    func url(for folder: Folder) -> URL {
+    public func url(for folder: XCTemplateFolder) -> URL {
         let url: URL
         switch folder {
         case .xcodeDestination:

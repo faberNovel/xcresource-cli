@@ -7,6 +7,7 @@
 
 import Foundation
 import ArgumentParser
+import XCTemplate
 
 struct RemoveTemplatesCommand: ParsableCommand {
 
@@ -26,6 +27,11 @@ struct RemoveTemplatesCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        try fileManager.removeItem(at: fileManager.url(for: .templates(namespace: namespace)))
+        try XCTemplate.RemoveTemplatesCommand(
+            namespace: namespace,
+            fileManager: fileManager,
+            urlProviding: fileManager
+        )
+        .run()
     }
 }

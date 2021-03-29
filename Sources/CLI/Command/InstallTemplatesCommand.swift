@@ -7,6 +7,7 @@
 
 import Foundation
 import ArgumentParser
+import XCTemplate
 
 struct InstallTemplatesCommand: ParsableCommand {
 
@@ -44,35 +45,14 @@ struct InstallTemplatesCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        let workingDirectory = fileManager.url(for: .workingDirectory)
-        try? fileManager.removeItem(at: workingDirectory)
-        defer {
-            try? fileManager.removeItem(at: workingDirectory)
-        }
-        let repositoryUrl = workingDirectory
-        print("Cloning \(url) templates…")
-        try downloadTemplates(fromURL: url, at: repositoryUrl)
-        let templateUrls = try fileManager.contentsOfDirectory(
-            at: repositoryUrl.appendingPathComponent(templatesPath),
-            includingPropertiesForKeys: nil,
-            options: .skipsHiddenFiles
+        try XCTemplate.InstallTemplatesCommand(
+            url: url,
+            namespace: namespace,
+            templatesPath: templatesPath,
+            pointer: pointer,
+            fileManager: fileManager,
+            urlProviding: fileManager
         )
-        let target = fileManager.url(for: .templates(namespace: namespace))
-        try? fileManager.removeItem(at: target)
-        try fileManager.createDirectory(at: target, withIntermediateDirectories: true)
-        try templateUrls.forEach { folder in
-            let folderDestination = target.appendingPathComponent(folder.lastPathComponent)
-            try fileManager.copyItem(at: folder, to: folderDestination)
-        }
-        let count = (try? CountTemplatesCommand(url: target).countTemplates()) ?? 0
-        print("Successfully installed \(count) templates 🎉")
-    }
-
-    // MARK: - Private
-
-    private func downloadTemplates(fromURL url: String, at location: URL) throws {
-        let command: ShellCommand = .gitDownload(url: url, reference: pointer, destionation: location.path)
-        let shell = Shell()
-        try shell.execute(command)
+        .run()
     }
 }
