@@ -21,7 +21,7 @@ class DynamicXCTemplateFolder {
     init(url: URL, fileManager: FileManager) {
         self.rootUrl = url.appendingPathComponent("GeneratedTemplates")
         self.fileManager = fileManager
-        fileManager.createIfNeededDirectory(at: rootUrl)
+        fileManager.createDirectoryIfNeeded(at: rootUrl)
     }
 
     func clean() {
@@ -40,7 +40,7 @@ class DynamicXCTemplateFolder {
             generateRootTemplate(name: "Template1")
             generateRootTemplate(name: "Template2")
             let folder = rootUrl.appendingPathComponent("Template")
-            fileManager.createIfNeededDirectory(at: folder)
+            fileManager.createDirectoryIfNeeded(at: folder)
             generateTemplate(name: "Template3", at: folder)
             generateTemplate(name: "Template4", at: folder)
         }
