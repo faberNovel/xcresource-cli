@@ -51,6 +51,7 @@ struct InstallTemplatesCommand: ParsableCommand {
             templatesPath: templatesPath,
             pointer: pointer,
             fileManager: fileManager,
+            output: CLIOutput(),
             urlProviding: fileManager
         )
         .run()

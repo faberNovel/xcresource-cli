@@ -30,6 +30,7 @@ struct ListTemplatesCommand: ParsableCommand {
         try XCTemplate.ListTemplatesCommand(
             namespace: namespace,
             fileManager: fileManager,
+            output: CLIOutput(),
             urlProviding: fileManager
         )
         .run()

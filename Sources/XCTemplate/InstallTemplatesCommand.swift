@@ -14,6 +14,7 @@ public struct InstallTemplatesCommand {
     public let templatesPath: String
     public let pointer: String
     private let fileManager: FileManager
+    private let output: CommandOutput
     private let urlProviding: XCTemplateFolderURLProviding
 
     // MARK: - Life Cycle
@@ -23,12 +24,14 @@ public struct InstallTemplatesCommand {
                 templatesPath: String,
                 pointer: String,
                 fileManager: FileManager,
+                output: CommandOutput,
                 urlProviding: XCTemplateFolderURLProviding) {
         self.url = url
         self.namespace = namespace
         self.templatesPath = templatesPath
         self.pointer = pointer
         self.fileManager = fileManager
+        self.output = output
         self.urlProviding = urlProviding
     }
 
@@ -41,7 +44,7 @@ public struct InstallTemplatesCommand {
             try? fileManager.removeItem(at: workingDirectory)
         }
         let repositoryUrl = workingDirectory
-        print("Cloning \(url) templates…")
+        output.print("Cloning \(url) templates…")
         try downloadTemplates(fromURL: url, at: repositoryUrl)
         let templateUrls = try fileManager.contentsOfDirectory(
             at: repositoryUrl.appendingPathComponent(templatesPath),
@@ -56,7 +59,7 @@ public struct InstallTemplatesCommand {
             try fileManager.copyItem(at: folder, to: folderDestination)
         }
         let count = (try? CountTemplatesCommand(url: target, fileManager: fileManager).countTemplates()) ?? 0
-        print("Successfully installed \(count) templates 🎉")
+        output.print("Successfully installed \(count) templates 🎉")
     }
 
     // MARK: - Private
