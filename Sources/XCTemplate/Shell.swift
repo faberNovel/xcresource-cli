@@ -1,13 +1,14 @@
-//
-//  File.swift
-//  
-//
-//  Created by Gaétan Zanella on 30/04/2020.
-//
 
 import Foundation
 
-typealias GitReference = String
+struct GitReference {
+
+    let name: String
+
+    init(_ name: String) {
+        self.name = name
+    }
+}
 
 enum ShellCommand {
     case open(path: String)
@@ -48,7 +49,7 @@ private extension ShellCommand {
     func shell() -> String {
         switch self {
         case let .gitDownload(url, reference, destination):
-            return "git clone -b '\(reference)' --single-branch --depth 1 \(url) \(destination)"
+            return "git clone -b '\(reference.name)' --single-branch --depth 1 \(url) \(destination)"
         case let .open(path):
             return "open \(path)"
         }

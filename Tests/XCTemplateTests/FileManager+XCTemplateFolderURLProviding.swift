@@ -12,7 +12,7 @@ extension FileManager: XCTemplateFolderURLProviding {
         case .workingDirectory:
             url = temporaryDirectory.appendingPathComponent("Working")
         case .xcodeDestination:
-            url = temporaryDirectory.appendingPathComponent("XcodeDestination")
+            url = temporaryDirectory.appendingPathComponent("Working")
         }
         createIfNeededDirectory(at: url)
         return url

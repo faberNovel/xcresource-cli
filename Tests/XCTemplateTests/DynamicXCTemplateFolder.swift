@@ -8,6 +8,7 @@
 import Foundation
 
 enum XCTemplateModel {
+    case empty
     case threeBasicTemplates
     case templateHierarchy
 }
@@ -29,6 +30,8 @@ class DynamicXCTemplateFolder {
 
     func prepare(model: XCTemplateModel) {
         switch model {
+        case .empty:
+            break
         case .threeBasicTemplates:
             generateRootTemplate(name: "Template1")
             generateRootTemplate(name: "Template2")
