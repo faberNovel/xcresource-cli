@@ -16,8 +16,6 @@ struct RemoveTemplatesCommand: ParsableCommand {
         abstract: "Remove Xcode templates."
     )
 
-    private var fileManager: FileManager { .default }
-
     // MARK: - ParsableCommand
 
     func run() throws {

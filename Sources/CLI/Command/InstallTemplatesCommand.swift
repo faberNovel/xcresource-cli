@@ -11,9 +11,13 @@ import XCTemplate
 
 struct InstallTemplatesCommand: ParsableCommand {
 
+    enum Error: Swift.Error {
+        case invalidURL
+    }
+
     @Option(
         name: .shortAndLong,
-        help: "The templates Git repository url. <url> can be a local directory path: ./src/my_template_repo"
+        help: "The templates Git repository url. <url> can be a local directory path: ./src/my_template_repo."
     )
     var url: String = "https://github.com/faberNovel/CodeSnippet_iOS.git"
 
@@ -31,7 +35,7 @@ struct InstallTemplatesCommand: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        help: "The targeted repo pointer (branch or tag)"
+        help: "The targeted repo pointer (branch or tag)."
     )
     var pointer: String = "master"
 
@@ -43,9 +47,20 @@ struct InstallTemplatesCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        try XCTemplateCLI().downloadTemplates(
-            for: XCTemplateNamespace(namespace),
-            from: .git(url: URL(string: url)!, reference: GitReference(pointer), folderPath: templatesPath)
+        guard let url = URL(string: url) else {
+            throw Error.invalidURL
+        }
+        let templateNamespace = XCTemplateNamespace(namespace)
+        let cli = XCTemplateCLI()
+        try cli.downloadTemplates(
+            for: templateNamespace,
+            from: .git(
+                url: url,
+                reference: GitReference(pointer),
+                folderPath: templatesPath
+            )
         )
+        let folder = try cli.templateFolder(for: templateNamespace)
+        print("\(folder.templateCount()) successfully installed 🎉")
     }
 }

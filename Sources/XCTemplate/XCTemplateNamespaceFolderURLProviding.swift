@@ -9,7 +9,10 @@ protocol XCTemplateFolderURLProviding {
 class NamespaceFolderURLProvider: XCTemplateFolderURLProviding {
 
     func rootTemplateURL() -> URL {
-        URL(fileURLWithPath: "Library/Developer/Xcode/Templates")
+        URL(
+            fileURLWithPath: "Library/Developer/Xcode/Templates",
+            relativeTo: FileManager.default.homeDirectoryForCurrentUser
+        )
     }
 
     func url(for namespace: XCTemplateNamespace) -> URL {

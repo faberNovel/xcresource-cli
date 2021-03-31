@@ -10,6 +10,8 @@ struct OpenTemplatesCommand: ParsableCommand {
         abstract: "Open Xcode templates folder."
     )
 
+    // MARK: - ParsableCommand
+
     func run() throws {
         try XCTemplateCLI().openRootTemplateFolder()
     }

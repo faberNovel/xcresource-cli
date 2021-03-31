@@ -29,7 +29,23 @@ struct ListTemplatesCommand: ParsableCommand {
         if folder.isEmpty() {
             print("No templates installed")
         } else {
+            folder.describe()
+        }
+    }
+}
 
+private extension XCTemplateFolder {
+
+    func describe(depth: Int = 0) {
+        if depth > 0 {
+            let prefix = (0..<depth).reduce(into: "", { r, _ in r += "#" })
+            print(prefix, "\(name)")
+        }
+        templates.forEach { template in
+            print("~>", template.name)
+        }
+        folders.forEach { folder in
+            folder.describe(depth: depth + 1)
         }
     }
 }

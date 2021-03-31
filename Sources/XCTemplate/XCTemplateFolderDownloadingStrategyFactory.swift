@@ -40,9 +40,10 @@ struct GitSourceDownloadingStrategy: XCTemplateFolderDownloadingStrategy {
             .gitDownload(url: url.absoluteString, reference: reference, destionation: tmp.path)
         )
         let templateUrls = try fileManager.contentsOfDirectory(
-            at: url.appendingPathComponent(folderPath),
+            at: tmp.appendingPathComponent(folderPath),
             includingPropertiesForKeys: nil
         )
+        try? fileManager.removeItem(at: destination)
         try fileManager.createDirectory(at: destination, withIntermediateDirectories: true)
         try templateUrls.forEach { folder in
             let folderDestination = destination.appendingPathComponent(folder.lastPathComponent)
