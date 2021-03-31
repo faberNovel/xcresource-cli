@@ -6,7 +6,7 @@ protocol XCTemplateFolderURLProviding {
     func url(for namespace: XCTemplateNamespace) -> URL
 }
 
-class NamespaceFolderURLProvider: XCTemplateFolderURLProviding {
+class NativeNamespaceFolderURLProvider: XCTemplateFolderURLProviding {
 
     func rootTemplateURL() -> URL {
         URL(

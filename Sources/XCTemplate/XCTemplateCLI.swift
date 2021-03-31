@@ -25,7 +25,7 @@ public class XCTemplateCLI {
             downloader: XCTemplatesDownloader(
                 factory: XCTemplateFolderDownloadingStrategyFactory(fileManager: .default)
             ),
-            urlProvider: NamespaceFolderURLProvider()
+            urlProvider: NativeNamespaceFolderURLProvider()
         )
     }
 
