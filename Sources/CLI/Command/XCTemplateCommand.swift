@@ -1,9 +1,3 @@
-//
-//  XCTemplateCommand.swift
-//
-//
-//  Created by Gaétan Zanella on 30/04/2020.
-//
 
 import Foundation
 import ArgumentParser

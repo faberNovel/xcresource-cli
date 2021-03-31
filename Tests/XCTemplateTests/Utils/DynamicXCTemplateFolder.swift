@@ -1,17 +1,6 @@
-//
-//  XCTemplateFolder.swift
-//  
-//
-//  Created by Gaétan Zanella on 30/03/2021.
-//
 
+import XCTemplate
 import Foundation
-
-enum XCTemplateModel {
-    case empty
-    case threeBasicTemplates
-    case templateHierarchy
-}
 
 class DynamicXCTemplateFolder {
 
@@ -19,7 +8,7 @@ class DynamicXCTemplateFolder {
     private let fileManager: FileManager
 
     init(url: URL, fileManager: FileManager) {
-        self.rootUrl = url.appendingPathComponent("GeneratedTemplates")
+        self.rootUrl = url
         self.fileManager = fileManager
         fileManager.createDirectoryIfNeeded(at: rootUrl)
     }
@@ -28,23 +17,16 @@ class DynamicXCTemplateFolder {
         try? fileManager.removeItem(at: rootUrl)
     }
 
-    func prepare(model: XCTemplateModel) {
-        switch model {
-        case .empty:
-            break
-        case .threeBasicTemplates:
-            generateRootTemplate(name: "Template1")
-            generateRootTemplate(name: "Template2")
-            generateRootTemplate(name: "Template3")
-        case .templateHierarchy:
-            generateRootTemplate(name: "Template1")
-            generateRootTemplate(name: "Template2")
-            let folder = rootUrl.appendingPathComponent("Template")
-            fileManager.createDirectoryIfNeeded(at: folder)
-            generateTemplate(name: "Template3", at: folder)
-            generateTemplate(name: "Template4", at: folder)
-        }
+    func createFolder(named name: String) -> DynamicXCTemplateFolder {
+        let url = rootUrl.appendingPathComponent(name)
+        return DynamicXCTemplateFolder(url: url, fileManager: fileManager)
     }
+
+    func createTemplate(named name: String) {
+        generateRootTemplate(name: name)
+    }
+
+    // MARK: - Private
 
     private func generateRootTemplate(name: String) {
         generateTemplate(name: name, at: rootUrl)
@@ -52,7 +34,6 @@ class DynamicXCTemplateFolder {
 
     private func generateTemplate(name: String, at url: URL) {
         let target = url.appendingPathComponent(name).appendingPathExtension("xctemplate")
-        print(target)
         fileManager.createFile(atPath: target.path, contents: nil, attributes: nil)
     }
 }

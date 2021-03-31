@@ -1,11 +1,11 @@
 
 import Foundation
 
-struct GitReference {
+public struct GitReference {
 
     let name: String
 
-    init(_ name: String) {
+    public init(_ name: String) {
         self.name = name
     }
 }

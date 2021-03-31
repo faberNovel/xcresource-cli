@@ -40,20 +40,12 @@ struct InstallTemplatesCommand: ParsableCommand {
         abstract: "Install Xcode templates."
     )
 
-    private var fileManager: FileManager { .default }
-
     // MARK: - ParsableCommand
 
     func run() throws {
-        try XCTemplate.InstallTemplatesCommand(
-            url: url,
-            namespace: namespace,
-            templatesPath: templatesPath,
-            pointer: pointer,
-            fileManager: fileManager,
-            output: CLIOutput(),
-            urlProviding: fileManager
+        try XCTemplateCLI().downloadTemplates(
+            for: XCTemplateNamespace(namespace),
+            from: .git(url: URL(string: url)!, reference: GitReference(pointer), folderPath: templatesPath)
         )
-        .run()
     }
 }

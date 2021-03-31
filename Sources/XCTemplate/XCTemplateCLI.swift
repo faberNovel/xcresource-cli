@@ -1,7 +1,7 @@
 
 import Foundation
 
-class XCTemplateCLI {
+public class XCTemplateCLI {
 
     private let fileManager: XCTemplateFileManager
     private let downloader: XCTemplatesDownloader
@@ -32,28 +32,28 @@ class XCTemplateCLI {
 
     // MARK: - Public
 
-    func downloadTemplates(for namespace: XCTemplateNamespace,
-                           from source: XCTemplateSource) throws {
+    public func downloadTemplates(for namespace: XCTemplateNamespace,
+                                  from source: XCTemplateSource) throws {
         try downloader.downloadTemplates(
             at: url(for: namespace),
             from: source
         )
     }
 
-    func removeTemplates(for namespace: XCTemplateNamespace) throws {
+    public func removeTemplates(for namespace: XCTemplateNamespace) throws {
         try fileManager.removeTemplateFolder(at: url(for: namespace))
     }
 
-    func rootTemplateFolder() throws -> XCTemplateFolder {
+    public func rootTemplateFolder() throws -> XCTemplateFolder {
         try fileManager.templateFolder(at: urlProvider.rootTemplateURL())
     }
 
-    func templateFolder(for namespace: XCTemplateNamespace) throws -> XCTemplateFolder {
+    public func templateFolder(for namespace: XCTemplateNamespace) throws -> XCTemplateFolder {
         try fileManager.templateFolder(at: url(for: namespace))
     }
 
-    func openTemplates(for namespace: XCTemplateNamespace) throws {
-        try Shell().execute(.open(path: url(for: namespace).path))
+    public func openRootTemplateFolder() throws {
+        try Shell().execute(.open(path: urlProvider.rootTemplateURL().path))
     }
 
     // MARK: - Private

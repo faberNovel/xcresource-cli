@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Gaétan Zanella on 03/05/2020.
-//
 
 import Foundation
 import ArgumentParser
@@ -22,17 +16,20 @@ struct ListTemplatesCommand: ParsableCommand {
         abstract: "List Xcode templates."
     )
 
-    private var fileManager: FileManager { .default }
-
     // MARK: - ParsableCommand
 
     func run() throws {
-        try XCTemplate.ListTemplatesCommand(
-            namespace: namespace,
-            fileManager: fileManager,
-            output: CLIOutput(),
-            urlProviding: fileManager
-        )
-        .run()
+        let folder: XCTemplateFolder
+        let cli = XCTemplateCLI()
+        if let namespace = namespace {
+            folder = try cli.templateFolder(for: XCTemplateNamespace(namespace))
+        } else {
+            folder = try cli.rootTemplateFolder()
+        }
+        if folder.isEmpty() {
+            print("No templates installed")
+        } else {
+
+        }
     }
 }

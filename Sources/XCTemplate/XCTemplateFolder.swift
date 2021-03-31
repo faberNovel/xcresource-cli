@@ -15,7 +15,11 @@ public struct XCTemplateFolder {
         self.templates = templates
     }
 
-    func templateCount() -> Int {
+    public func templateCount() -> Int {
         templates.count + folders.reduce(into: 0, { $0 += $1.templateCount() })
+    }
+
+    public func isEmpty() -> Bool {
+        templateCount() == 0
     }
 }

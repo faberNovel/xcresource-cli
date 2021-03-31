@@ -1,9 +1,3 @@
-//
-//  File.swift
-//  
-//
-//  Created by Gaétan Zanella on 03/05/2020.
-//
 
 import Foundation
 import ArgumentParser
@@ -27,11 +21,6 @@ struct RemoveTemplatesCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        try XCTemplate.RemoveTemplatesCommand(
-            namespace: namespace,
-            fileManager: fileManager,
-            urlProviding: fileManager
-        )
-        .run()
+        try XCTemplateCLI().removeTemplates(for: XCTemplateNamespace(namespace))
     }
 }
