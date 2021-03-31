@@ -9,7 +9,7 @@ class XCTemplateFolderDownloadingStrategyFactory {
         self.fileManager = fileManager
     }
 
-    func strategy(source: XCTemplateSource) -> XCTemplateFolderDownloadingStrategy {
+    func makeStrategy(source: XCTemplateSource) -> XCTemplateFolderDownloadingStrategy {
         switch source {
         case let .git(url, reference, folderPath):
             return GitSourceDownloadingStrategy(
@@ -41,8 +41,7 @@ struct GitSourceDownloadingStrategy: XCTemplateFolderDownloadingStrategy {
         )
         let templateUrls = try fileManager.contentsOfDirectory(
             at: url.appendingPathComponent(folderPath),
-            includingPropertiesForKeys: nil,
-            options: .skipsHiddenFiles
+            includingPropertiesForKeys: nil
         )
         try fileManager.createDirectory(at: destination, withIntermediateDirectories: true)
         try templateUrls.forEach { folder in
