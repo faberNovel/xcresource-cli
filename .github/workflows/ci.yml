@@ -11,4 +11,4 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Build and Test
-      run: swift test -c release
+      run: swift test

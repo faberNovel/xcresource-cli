@@ -31,13 +31,11 @@ class XCTemplateFileManager {
         var folders: [XCTemplateFolderFile] = []
         try urls.forEach { url in
             if url.isTemplate {
-                print("Template \(url)")
                 templates.append(XCTemplateFile(name: url.lastPathComponent, url: url))
             } else if url.isDirectory {
                 folders.append(try recursiveTemplateFolder(at: url))
             }
         }
-        print("Folder \(url)")
         return XCTemplateFolderFile(
             name: url.lastPathComponent,
             url: url,
