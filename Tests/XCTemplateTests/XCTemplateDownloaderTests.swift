@@ -5,6 +5,7 @@ import XCTest
 final class XCTemplateDownloaderTests: XCTestCase {
 
     private var fileManager: FileManager!
+    private var templateManager: XCTemplateFileManager!
     private var workingUrl: URL!
     private var templatesUrl: URL!
     private var repository: GitRepository!
@@ -15,6 +16,7 @@ final class XCTemplateDownloaderTests: XCTestCase {
         templatesUrl = workingUrl.appendingPathComponent("Templates")
         repository = GitRepository(url: workingUrl.appendingPathComponent("Repository"))
         repository.initialize()
+        templateManager = XCTemplateFileManager(fileManager: fileManager)
     }
 
     override func tearDown() {
@@ -37,10 +39,11 @@ final class XCTemplateDownloaderTests: XCTestCase {
             url: repository.url,
             reference: reference,
             folderPath: templatesPath,
-            fileManager: fileManager
+            fileManager: fileManager,
+            templateManager: templateManager
         )
         try strategy.download(to: templatesUrl)
-        XCTAssertTrue(fileManager.contentsEqual(atPath: folder.rootUrl.path, andPath: templatesUrl.path))
+        try expectTemplates(at: folder.rootUrl, equals: templatesUrl)
     }
 
     func testTagDownload() throws {
@@ -59,10 +62,11 @@ final class XCTemplateDownloaderTests: XCTestCase {
             url: repository.url,
             reference: reference,
             folderPath: templatesPath,
-            fileManager: fileManager
+            fileManager: fileManager,
+            templateManager: templateManager
         )
         try strategy.download(to: templatesUrl)
-        XCTAssertTrue(fileManager.contentsEqual(atPath: folder.rootUrl.path, andPath: templatesUrl.path))
+        try expectTemplates(at: folder.rootUrl, equals: templatesUrl)
     }
 
     func testDeepFolderDownload() throws {
@@ -81,10 +85,17 @@ final class XCTemplateDownloaderTests: XCTestCase {
             url: repository.url,
             reference: reference,
             folderPath: templatesPath,
-            fileManager: fileManager
+            fileManager: fileManager,
+            templateManager: templateManager 
         )
         try strategy.download(to: templatesUrl)
-        XCTAssertTrue(fileManager.contentsEqual(atPath: folder.rootUrl.path, andPath: templatesUrl.path))
+        try expectTemplates(at: folder.rootUrl, equals: templatesUrl)
+    }
+
+    private func expectTemplates(at origin: URL, equals destination: URL) throws {
+        let lhs = try templateManager.templateFolder(at: origin)
+        let rhs = try templateManager.templateFolder(at: destination)
+        XCTAssertTrue(rhs.hasSameContent(as: lhs))
     }
 
     static var allTests = [
@@ -92,4 +103,31 @@ final class XCTemplateDownloaderTests: XCTestCase {
         ("testTagDownload", testTagDownload),
         ("testDeepFolderDownload", testDeepFolderDownload),
     ]
+}
+
+private extension XCTemplateFolderFile {
+
+    func hasSameContent(as other: XCTemplateFolderFile) -> Bool {
+        guard folders.count == other.folders.count else { return false }
+        let foldersHaveSameContent = zip(other.folders, folders).allSatisfy { $0.hasSameContent(as: $1) && $0.name == $1.name }
+        let templatesHaveSameContent = zip(other.templates, templates).allSatisfy { $0.hasSameContent(as: $1) }
+        return templatesHaveSameContent && foldersHaveSameContent
+    }
+}
+
+private extension XCTemplateFile {
+
+    func hasSameContent(as other: XCTemplateFile) -> Bool {
+        name == other.name
+    }
+}
+
+private extension FileManager {
+
+    func templateContentEquals(atPath lhs: String, andPath rhs: String) -> Bool {
+        let lhsEnumerator = enumerator(atPath: lhs)
+        let rhsEnumerator = enumerator(atPath: rhs)
+        while let lhs = lhsEnumerator?.nextObject() as? String, let rhs = rhsEnumerator?.nextObject() as? String, lhs == rhs {}
+        return lhsEnumerator?.nextObject() == nil && rhsEnumerator?.nextObject() == nil
+    }
 }

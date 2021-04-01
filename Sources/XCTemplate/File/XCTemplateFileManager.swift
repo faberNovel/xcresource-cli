@@ -17,29 +17,32 @@ class XCTemplateFileManager {
         try fileManager.removeItem(at: url)
     }
 
-    func templateFolder(at url: URL) throws -> XCTemplateFolder {
+    func templateFolder(at url: URL) throws -> XCTemplateFolderFile {
         try recursiveTemplateFolder(at: url)
     }
 
-    private func recursiveTemplateFolder(at url: URL) throws -> XCTemplateFolder {
+    private func recursiveTemplateFolder(at url: URL) throws -> XCTemplateFolderFile {
         let urls = try fileManager.contentsOfDirectory(
             at: url,
-            includingPropertiesForKeys: [],
+            includingPropertiesForKeys: [.isDirectoryKey],
             options: .skipsHiddenFiles
         )
-        var templates: [XCTemplate] = []
-        var folders: [XCTemplateFolder] = []
+        var templates: [XCTemplateFile] = []
+        var folders: [XCTemplateFolderFile] = []
         try urls.forEach { url in
             if url.isTemplate {
-                templates.append(XCTemplate(name: url.lastPathComponent))
-            } else {
+                print("Template \(url)")
+                templates.append(XCTemplateFile(name: url.lastPathComponent, url: url))
+            } else if url.isDirectory {
                 folders.append(try recursiveTemplateFolder(at: url))
             }
         }
-        return XCTemplateFolder(
+        print("Folder \(url)")
+        return XCTemplateFolderFile(
             name: url.lastPathComponent,
-            folders: folders,
-            templates: templates
+            url: url,
+            templates: templates,
+            folders: folders
         )
     }
 }

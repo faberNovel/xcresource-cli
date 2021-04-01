@@ -18,12 +18,16 @@ public class XCTemplateCLI {
     }
 
     public convenience init() {
+        let fileManager = XCTemplateFileManager(
+            fileManager: .default
+        )
         self.init(
-            fileManager: XCTemplateFileManager(
-                fileManager: .default
-            ),
+            fileManager: fileManager,
             downloader: XCTemplatesDownloader(
-                factory: XCTemplateFolderDownloadingStrategyFactory(fileManager: .default)
+                factory: XCTemplateFolderDownloadingStrategyFactory(
+                    fileManager: .default,
+                    templateManager: fileManager
+                )
             ),
             urlProvider: NativeNamespaceFolderURLProvider()
         )
@@ -44,11 +48,13 @@ public class XCTemplateCLI {
     }
 
     public func rootTemplateFolder() throws -> XCTemplateFolder {
-        try fileManager.templateFolder(at: urlProvider.rootTemplateURL())
+        let folder = try fileManager.templateFolder(at: urlProvider.rootTemplateURL())
+        return XCTemplateFolderMapper().map(folder)
     }
 
     public func templateFolder(for namespace: XCTemplateNamespace) throws -> XCTemplateFolder {
-        try fileManager.templateFolder(at: url(for: namespace))
+        let folder = try fileManager.templateFolder(at: url(for: namespace))
+        return XCTemplateFolderMapper().map(folder)
     }
 
     public func openRootTemplateFolder() throws {
