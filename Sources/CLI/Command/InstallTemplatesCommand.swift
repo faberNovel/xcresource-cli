@@ -61,6 +61,6 @@ struct InstallTemplatesCommand: ParsableCommand {
             )
         )
         let folder = try cli.templateFolder(for: templateNamespace)
-        print("\(folder.templateCount()) successfully installed 🎉")
+        print("\(folder.templateCount()) templates successfully installed 🎉")
     }
 }
