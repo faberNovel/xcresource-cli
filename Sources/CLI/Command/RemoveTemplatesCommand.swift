@@ -1,32 +1,24 @@
-//
-//  File.swift
-//  
-//
-//  Created by Gaétan Zanella on 03/05/2020.
-//
 
 import Foundation
 import ArgumentParser
+import XCTemplate
 
 struct RemoveTemplatesCommand: ParsableCommand {
 
     @Option(
         name: .shortAndLong,
-        default: "FABERNOVEL",
         help: "The template namespace to delete."
     )
-    var namespace: String
+    var namespace: String = "FABERNOVEL"
 
     public static let configuration = CommandConfiguration(
         commandName: "remove",
         abstract: "Remove Xcode templates."
     )
 
-    private var fileManager: FileManager { .default }
-
     // MARK: - ParsableCommand
 
     func run() throws {
-        try fileManager.removeItem(at: fileManager.url(for: .templates(namespace: namespace)))
+        try XCTemplateCLI().removeTemplates(for: XCTemplateNamespace(namespace))
     }
 }

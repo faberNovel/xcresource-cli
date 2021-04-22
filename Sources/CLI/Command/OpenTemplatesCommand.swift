@@ -1,12 +1,7 @@
-//
-//  File.swift
-//  
-//
-//  Created by Gaétan Zanella on 15/05/2020.
-//
 
 import Foundation
 import ArgumentParser
+import XCTemplate
 
 struct OpenTemplatesCommand: ParsableCommand {
 
@@ -15,8 +10,9 @@ struct OpenTemplatesCommand: ParsableCommand {
         abstract: "Open Xcode templates folder."
     )
 
+    // MARK: - ParsableCommand
+
     func run() throws {
-        let url = FileManager.default.url(for: .xcodeDestination)
-        try Shell().execute(.open(path: url.path))
+        try XCTemplateCLI().openRootTemplateFolder()
     }
 }
