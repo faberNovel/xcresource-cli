@@ -12,5 +12,4 @@ struct XCSnippetFile {
 
     let identifier: String
     let tag: Tag
-    let url: URL
 }

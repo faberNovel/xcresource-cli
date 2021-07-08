@@ -4,7 +4,7 @@ import Foundation
 class XCSnippetFileManager {
 
     private let fileManager: FileManager
-    private let parser = XCSnippetFileParser()
+    private let coder = XCSnippetCoder()
 
     // MARK: - Life Cycle
 
@@ -15,14 +15,7 @@ class XCSnippetFileManager {
     // MARK: - Public
 
     func snippets(at url: URL) throws -> [XCSnippetFile] {
-        try fileManager.contentsOfDirectory(at: url).compactMap { url -> XCSnippetFile? in
-            guard url.isSnippet else { return nil }
-            return XCSnippetFile(
-                identifier: url.deletingPathExtension().lastPathComponent,
-                tag: try parser.snippetTag(at: url) ?? .unspecified,
-                url: url
-            )
-        }
+        try enumerateSnippets(at: url).map { $1 }
     }
 
     func snippets(at url: URL, with tag: XCSnippetFile.Tag) throws -> [XCSnippetFile] {
@@ -30,29 +23,66 @@ class XCSnippetFileManager {
     }
 
     func snippetTags(at url: URL) throws -> Set<XCSnippetFile.Tag> {
-        Set(try snippets(at: url).map { $0.tag })
+        Set(try enumerateSnippets(at: url).map { $1.tag })
     }
 
     func removeSnippets(with tag: XCSnippetFile.Tag, at url: URL) throws {
-        try snippets(at: url, with: tag).forEach { snippet in
-            try fileManager.removeItem(at: snippet.url)
-        }
+        try enumerateSnippets(at: url)
+            .filter { $1.tag == tag }
+            .forEach { url, _ in
+                try fileManager.removeItem(at: url)
+            }
     }
 
     func tagSnippets(at url: URL, tag: XCSnippetFile.Tag) throws {
-        try snippets(at: url).forEach { snippet in
-            try parser.tagSnippet(at: snippet.url, tag: tag)
+        try enumerateSnippets(at: url).forEach { url, _ in
+            let data = try Data(contentsOf: url)
+            let parser = try XCSnippetFileParser(data: data)
+            try parser.tag(tag)
+            try coder.encodeSnippet(parser.snippetContent).write(to: url)
         }
     }
 
     func copySnippets(at origin: URL,
                       to destination: URL) throws {
-        try snippets(at: origin).forEach { snippet in
+        try enumerateSnippets(at: origin).forEach { url, _ in
             try fileManager.copyItem(
-                at: snippet.url,
-                to: destination.appendingPathComponent(snippet.url.lastPathComponent)
+                at: url,
+                to: destination.appendingPathComponent(url.lastPathComponent)
             )
         }
+    }
+
+    // MARK: - Private
+
+    private func enumerateSnippets(at url: URL) throws -> [(URL, XCSnippetFile)] {
+        try fileManager.contentsOfDirectory(at: url).compactMap { url -> (URL, XCSnippetFile)? in
+            guard url.isSnippet else { return nil }
+            let data = try Data(contentsOf: url)
+            let parser = try XCSnippetFileParser(data: data)
+            return (url, XCSnippetFile(
+                identifier: url.deletingPathExtension().lastPathComponent,
+                tag: try parser.tag()
+            ))
+        }
+    }
+}
+
+class XCSnippetCoder {
+
+    enum CodingError: Error {
+        case invalidData
+    }
+
+    func decodeSnippet(from data: Data) throws -> [String: Any] {
+        guard let file = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any] else {
+            throw CodingError.invalidData
+        }
+        return file
+    }
+
+    func encodeSnippet(_ snippet: [String: Any]) throws -> Data {
+        try PropertyListSerialization.data(fromPropertyList: snippet, format: .xml, options: .zero)
     }
 }
 
@@ -66,25 +96,21 @@ class XCSnippetFileParser {
         case invalidData
     }
 
-    func tagSnippet(at url: URL, tag: XCSnippetFile.Tag) throws {
-        var file = try snippet(at: url)
-        file[Constants.tagKey] = tag.identifier
-        let result = try PropertyListSerialization.data(fromPropertyList: file, format: .xml, options: .zero)
-        try result.write(to: url)
+    private(set) var snippetContent: [String: Any]
+
+    init(data: Data) throws {
+        snippetContent = try XCSnippetCoder().decodeSnippet(from: data)
     }
 
-    func snippetTag(at url: URL) throws -> XCSnippetFile.Tag? {
-        let file = try snippet(at: url)
-        return (file[Constants.tagKey] as? String).flatMap { XCSnippetFile.Tag(identifier: $0) }
+    init(snippetContent: [String: Any]) {
+        self.snippetContent = snippetContent
     }
 
-    // MARK: - Private
+    func tag(_ tag: XCSnippetFile.Tag) throws {
+        snippetContent[Constants.tagKey] = tag == .unspecified ? nil : tag.identifier
+    }
 
-    private func snippet(at url: URL) throws -> [String: Any] {
-        let data = try Data(contentsOf: url)
-        guard let file = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any] else {
-            throw ParsingError.invalidData
-        }
-        return file
+    func tag() throws -> XCSnippetFile.Tag {
+        (snippetContent[Constants.tagKey] as? String).flatMap { XCSnippetFile.Tag(identifier: $0) } ?? .unspecified
     }
 }

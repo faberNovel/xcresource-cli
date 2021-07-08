@@ -3,69 +3,32 @@ import Foundation
 
 public class XCSnippetCLI {
 
-    private let snippetFileManager: XCSnippetFileManager
-    private let downloader: XCSnippetsDownloader
-    private let urlProvider: XCSnippetFolderURLProviding
+    private let library = XCSnippetLibrary()
 
     // MARK: - Life Cycle
 
-    public convenience init() {
-        let snippetFileManager = XCSnippetFileManager(fileManager: .default)
-        self.init(
-            snippetFileManager: snippetFileManager,
-            downloader: XCSnippetsDownloader(
-                fileManager: .default,
-                snippetFileManager: snippetFileManager,
-                strategyFactory: XCSnippetDownloadingStrategyFactory(fileManager: .default)
-            ),
-            urlProvider: NativeNamespaceFolderURLProvider()
-        )
-    }
-
-    internal init(snippetFileManager: XCSnippetFileManager,
-                  downloader: XCSnippetsDownloader,
-                  urlProvider: XCSnippetFolderURLProviding) {
-        self.snippetFileManager = snippetFileManager
-        self.downloader = downloader
-        self.urlProvider = urlProvider
-    }
+    public init() {}
 
     // MARK: - Public
 
     public func downloadSnippets(for namespace: XCSnippetNamespace,
                                  from source: XCSnippetSource) throws {
-        try downloader.downloadSnippets(
-            at: urlProvider.rootSnippetFolderURL(),
-            from: source,
-            namespace: namespace
-        )
+        library.installSnippets(for: namespace, from: source)
     }
 
     public func removeSnippets(for namespace: XCSnippetNamespace) throws {
-        try snippetFileManager.removeSnippets(
-            with: SnippetNamespaceToSnippetFileTagMapper().map(namespace),
-            at: urlProvider.rootSnippetFolderURL()
-        )
+        try library.removeSnippets(for: namespace)
     }
 
     public func snippetList(for namespace: XCSnippetNamespace) throws -> XCSnippetList {
-        let mapper = SnippetFileToSnippetMapper()
-        return XCSnippetList(snippets: try snippetFileManager.snippets(
-            at: urlProvider.rootSnippetFolderURL(),
-            with: SnippetNamespaceToSnippetFileTagMapper().map(namespace)
-        ).map {
-            mapper.map($0)
-        })
+        try library.snippetList(for: namespace)
     }
 
     public func snippetNamespaces() throws -> [XCSnippetNamespace] {
-        let mapper = SnippetFileTagToSnippetNamespaceMapper()
-        return try snippetFileManager.snippetTags(at: urlProvider.rootSnippetFolderURL()).map {
-            mapper.map($0)
-        }
+        try library.snippetNamespaces()
     }
 
     public func openSnippetFolder() throws {
-        try Shell().execute(.open(path: urlProvider.rootSnippetFolderURL().path))
+        try Shell().execute(.open(path: library.snippetFolderURL().path))
     }
 }
