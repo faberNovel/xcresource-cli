@@ -6,7 +6,10 @@ protocol XCTemplateFolderURLProviding {
     func url(for namespace: XCTemplateNamespace) -> URL
 }
 
-class NativeNamespaceFolderURLProvider: XCTemplateFolderURLProviding {
+class NativeNamespaceFolderURLProvider: XCTemplateFolderURLProviding,
+                                        XCSnippetFolderURLProviding {
+
+    // MARK: - XCTemplateFolderURLProviding
 
     func rootTemplateURL() -> URL {
         URL(
@@ -17,5 +20,14 @@ class NativeNamespaceFolderURLProvider: XCTemplateFolderURLProviding {
 
     func url(for namespace: XCTemplateNamespace) -> URL {
         rootTemplateURL().appendingPathComponent(namespace.id)
+    }
+
+    // MARK: - XCSnippetFolderURLProviding
+
+    func rootSnippetFolderURL() -> URL {
+        URL(
+            fileURLWithPath: "Library/Developer/Xcode/UserData/CodeSnippets",
+            relativeTo: FileManager.default.homeDirectoryForCurrentUser
+        )
     }
 }

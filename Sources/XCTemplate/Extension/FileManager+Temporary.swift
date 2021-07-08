@@ -12,4 +12,10 @@ extension FileManager {
         )
         return url
     }
+
+    func contentsOfDirectory(at url: URL) throws -> [URL] {
+        try contentsOfDirectory(atPath: url.path).map {
+            URL(fileURLWithPath: $0)
+        }
+    }
 }

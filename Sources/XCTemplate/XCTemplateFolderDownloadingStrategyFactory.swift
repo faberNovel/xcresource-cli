@@ -46,24 +46,6 @@ struct GitSourceDownloadingStrategy: XCTemplateFolderDownloadingStrategy {
         let folder = try templateManager.templateFolder(at: tmp.appendingPathComponent(folderPath))
         try? fileManager.removeItem(at: destination)
         try fileManager.createDirectory(at: destination, withIntermediateDirectories: true, attributes: nil)
-        try copy(folder, to: destination)
-    }
-
-    private func copy(_ folder: XCTemplateFolderFile, to destination: URL) throws {
-        try folder.templates.forEach { template in
-            try fileManager.copyItem(
-                at: template.url,
-                to: destination.appendingPathComponent(template.name)
-            )
-        }
-        try folder.folders.forEach { folder in
-            let url = destination.appendingPathComponent(folder.name)
-            try fileManager.createDirectory(
-                at: url,
-                withIntermediateDirectories: true,
-                attributes: nil
-            )
-            try copy(folder, to: url)
-        }
+        try templateManager.copy(folder, to: destination)
     }
 }

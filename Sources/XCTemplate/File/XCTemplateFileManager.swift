@@ -21,6 +21,24 @@ class XCTemplateFileManager {
         try recursiveTemplateFolder(at: url)
     }
 
+    func copy(_ folder: XCTemplateFolderFile, to destination: URL) throws {
+        try folder.templates.forEach { template in
+            try fileManager.copyItem(
+                at: template.url,
+                to: destination.appendingPathComponent(template.name)
+            )
+        }
+        try folder.folders.forEach { folder in
+            let url = destination.appendingPathComponent(folder.name)
+            try fileManager.createDirectory(
+                at: url,
+                withIntermediateDirectories: true,
+                attributes: nil
+            )
+            try copy(folder, to: url)
+        }
+    }
+
     private func recursiveTemplateFolder(at url: URL) throws -> XCTemplateFolderFile {
         let urls = try fileManager.contentsOfDirectory(
             at: url,
