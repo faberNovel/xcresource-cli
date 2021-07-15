@@ -19,6 +19,25 @@ struct ListSnippetsCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        // TODO:(gz)
+        let cli = XCSnippetCLI()
+        if let namespace = namespace {
+            let xcnamespace = XCSnippetNamespace(namespace)
+            try cli.describe(xcnamespace)
+        } else {
+            let namespaces = try cli.snippetNamespaces()
+            try namespaces.forEach { namespace in
+                try cli.describe(namespace)
+            }
+        }
+    }
+}
+
+private extension XCSnippetCLI {
+
+    func describe(_ namespace: XCSnippetNamespace) throws {
+        print("#", namespace.name)
+        try snippetList(for: namespace).snippets.forEach { snippet in
+            print("-", snippet.name)
+        }
     }
 }

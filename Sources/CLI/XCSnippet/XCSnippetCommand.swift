@@ -5,8 +5,7 @@ import ArgumentParser
 struct XCSnippetCommand: ParsableCommand {
 
     static let configuration = CommandConfiguration(
-        commandName: "xcsnippet",
-        abstract: "A Swift command-line tool to manage Xcode snippet.",
+        commandName: "snippet",
         subcommands: [
             InstallSnippetsCommand.self,
             RemoveSnippetsCommand.self,

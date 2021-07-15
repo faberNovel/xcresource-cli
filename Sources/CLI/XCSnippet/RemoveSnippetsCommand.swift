@@ -19,6 +19,6 @@ struct RemoveSnippetsCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        // TODO:(gz)
+        try XCSnippetCLI().removeSnippets(for: XCSnippetNamespace(namespace))
     }
 }

@@ -13,6 +13,6 @@ struct OpenSnippetsCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        // TODO:(gz)
+        try XCSnippetCLI().openSnippetFolder()
     }
 }
