@@ -14,5 +14,6 @@ struct XCSnippetFile {
     }
 
     let identifier: String
+    let name: String
     let tag: Tag
 }

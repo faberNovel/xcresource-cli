@@ -5,6 +5,7 @@ class XCSnippetFileParser {
 
     private enum Constants {
         static let tagKey = "IDECodeSnippetSummary"
+        static let nameKey = "IDECodeSnippetTitle"
     }
 
     private let tagger = XCSnippetFileSummaryTagger()
@@ -24,9 +25,7 @@ class XCSnippetFileParser {
     }
 
     func tag(_ tag: XCSnippetFile.Tag) throws {
-        guard let content = snippetContent[Constants.tagKey] as? String else {
-            return
-        }
+        let content = (snippetContent[Constants.tagKey] as? String) ?? ""
         snippetContent[Constants.tagKey] = tagger.tag(content, tag: tag.identifier)
     }
 
@@ -35,5 +34,12 @@ class XCSnippetFileParser {
             return .unspecified
         }
         return tagger.tag(in: content).flatMap { XCSnippetFile.Tag(identifier: $0) } ?? .unspecified
+    }
+
+    func name() throws -> String {
+        guard let name = snippetContent[Constants.nameKey] as? String else {
+            throw ParsingError.invalidData
+        }
+        return name
     }
 }

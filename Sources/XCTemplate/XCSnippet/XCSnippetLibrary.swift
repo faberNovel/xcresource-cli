@@ -55,6 +55,9 @@ public class XCSnippetLibrary {
             with: SnippetNamespaceToSnippetFileTagMapper().map(namespace)
         ).map {
             mapper.map($0)
+        }
+        .sorted {
+            $0.name < $1.name
         })
     }
 

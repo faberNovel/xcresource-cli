@@ -63,6 +63,7 @@ class XCSnippetFileManager {
                 let parser = try XCSnippetFileParser(data: data)
                 return (url, XCSnippetFile(
                     identifier: url.deletingPathExtension().lastPathComponent,
+                    name: try parser.name(),
                     tag: try parser.tag()
                 ))
             }
