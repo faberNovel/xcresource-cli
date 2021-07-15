@@ -4,29 +4,29 @@
 import PackageDescription
 
 let package = Package(
-    name: "XCTemplate",
+    name: "XCResource",
     platforms: [
         .macOS(.v10_15),
     ],
     products: [
-        .executable(name: "xctemplate", targets: ["CLI"]),
-        .library(name: "XCTemplate", targets: ["XCTemplate"]),
+        .executable(name: "xcresource-cli", targets: ["CLI"]),
+        .library(name: "XCResource", targets: ["XCResource"]),
     ],
     dependencies: [
         .package(url: "https://github.com/apple/swift-argument-parser", from: "0.4.1")
     ],
     targets: [
-        .target(name: "XCTemplate", dependencies: []),
+        .target(name: "XCResource", dependencies: []),
         .target(
             name: "CLI",
             dependencies: [
-                "XCTemplate",
+                "XCResource",
                 .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),
         .testTarget(
-            name: "XCTemplateTests",
-            dependencies: ["XCTemplate"]
+            name: "XCResourceTests",
+            dependencies: ["XCResource"]
         ),
     ]
 )

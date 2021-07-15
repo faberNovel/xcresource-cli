@@ -1,11 +1,12 @@
-# xctemplate
+# xcresource
 
-A Xcode template manager.
+A Xcode resource manager. Use it to download Xcode templates or snippets from git repositories. 
 
 ## Requirements
 
 - Swift 5.2
 - **Xcode 11.4** or later
+- macOS 10.5
 
 ## Installation
 
@@ -14,28 +15,28 @@ A Xcode template manager.
 Run the following command to install using Homebrew:
 
 ```
-$ brew install fabernovel/formulae/xctemplate
+$ brew install fabernovel/formulae/xcresource
 ```
 (this will also install the `cmake` dependency)
 
 To uninstall it:
 ```
-$ brew uninstall xctemplate
+$ brew uninstall xcresource
 ```
 
 ### Manually
 
 Run the following commands to build and install manually:
 ```
-$ git clone https://github.com/faberNovel/xctemplate-cli
-$ cd xctemplate-cli
+$ git clone https://github.com/faberNovel/xcresource-cli
+$ cd xcresource-cli
 $ make install
 ```
 
 ## Usage
 
 ```
-OVERVIEW: A Swift command-line tool to manage Xcode templates.
+OVERVIEW: A Swift command-line tool to manage Xcode resources.
 
 USAGE: xctemplate <subcommand>
 
@@ -56,7 +57,7 @@ SUBCOMMANDS:
 ```
 OVERVIEW: Install Xcode templates.
 
-USAGE: xctemplate install [--url <url>] [--namespace <namespace>] [--templates-path <templates-path>] [--pointer <pointer>]
+USAGE: xcresource template install [--url <url>] [--namespace <namespace>] [--templates-path <templates-path>] [--pointer <pointer>]
 
 OPTIONS:
   -u, --url <url>         The templates Git repository url. <url> can be a local directory path: ./src/my_template_repo (default: https://github.com/faberNovel/CodeSnippet_iOS.git)
@@ -75,7 +76,7 @@ Running `xctemplate install` installs the Fabernovel templates under the `FABERN
 ```
 OVERVIEW: List Xcode templates.
 
-USAGE: xctemplate list [--namespace <namespace>]
+USAGE: xcresource template list [--namespace <namespace>]
 
 OPTIONS:
   -n, --namespace <namespace>
@@ -88,7 +89,7 @@ OPTIONS:
 ```
 OVERVIEW: Remove Xcode templates.
 
-USAGE: xctemplate remove [--namespace <namespace>]
+USAGE: xcresource template remove [--namespace <namespace>]
 
 OPTIONS:
   -n, --namespace <namespace>
@@ -101,7 +102,7 @@ OPTIONS:
 ```
 OVERVIEW: Open Xcode templates folder.
 
-USAGE: xctemplate open
+USAGE: xcresource template open
 
 OPTIONS:
   -h, --help              Show help information.

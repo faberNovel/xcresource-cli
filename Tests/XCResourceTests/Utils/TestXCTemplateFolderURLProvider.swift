@@ -1,5 +1,5 @@
 
-@testable import XCTemplate
+@testable import XCResource
 import Foundation
 
 class TestXCTemplateFolderURLProvider: XCTemplateFolderURLProviding {

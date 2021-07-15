@@ -1,5 +1,5 @@
 
-@testable import XCTemplate
+@testable import XCResource
 import XCTest
 
 private struct TagContentSample {

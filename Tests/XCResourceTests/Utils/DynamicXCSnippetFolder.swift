@@ -1,5 +1,5 @@
 
-import XCTemplate
+import XCResource
 import Foundation
 
 class DynamicXCSnippetFolder {

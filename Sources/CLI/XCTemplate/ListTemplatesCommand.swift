@@ -1,7 +1,7 @@
 
 import Foundation
 import ArgumentParser
-import XCTemplate
+import XCResource
 
 struct ListTemplatesCommand: ParsableCommand {
 

@@ -1,6 +1,6 @@
 
 import Foundation
-@testable import XCTemplate
+@testable import XCResource
 
 class GitRepository {
 

@@ -1,7 +1,7 @@
 
 import Foundation
 import XCTest
-@testable import XCTemplate
+@testable import XCResource
 
 extension FileManager {
 
