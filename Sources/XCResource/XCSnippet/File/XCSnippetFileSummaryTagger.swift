@@ -53,7 +53,6 @@ private extension Scanner {
     func scanNamespace(marker: String) -> String? {
         guard scanString(marker) != nil else { return nil }
         if let namespace = scanUpToCharacters(from: .whitespacesAndNewlines) {
-            print(namespace)
             return namespace
         } else {
             return scanToEnd()

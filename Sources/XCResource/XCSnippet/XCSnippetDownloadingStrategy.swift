@@ -44,10 +44,9 @@ struct GitSourceSnippetDownloadingStrategy: XCSnippetDownloadingStrategy {
             .gitDownload(url: url.absoluteString, reference: reference, destionation: tmp.path)
         )
         let snippetsDirectoryURL = tmp.appendingPathComponent(folderPath)
-        let snippets = try fileManager.contentsOfDirectory(atPath: snippetsDirectoryURL.path)
-        for path in snippets {
-            let url = URL(fileURLWithPath: path)
-            try fileManager.copyItem(at: url, to: tmp.appendingPathComponent(url.lastPathComponent))
+        let snippetURLs = try fileManager.contentsOfDirectory(at: snippetsDirectoryURL)
+        for url in snippetURLs {
+            try fileManager.copyItem(at: url, to: destination.appendingPathComponent(url.lastPathComponent))
         }
     }
 }

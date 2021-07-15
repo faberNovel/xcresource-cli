@@ -79,7 +79,7 @@ final class XCSnippetFileManagerTests: XCTestCase {
         let random = folder.createRandomFile()
         let tagB = XCSnippetFile.Tag(identifier: "B")
         try manager.tagSnippets(at: folder.rootUrl, tag: tagB)
-        try fileManager.assertDirectoryContains(
+        fileManager.assertDirectoryContains(
             ["A.codesnippet", "B.codesnippet", random],
             at: folder.rootUrl
         )
@@ -95,17 +95,17 @@ final class XCSnippetFileManagerTests: XCTestCase {
         folder.create(.tagged(id: "A", tag: "A"))
         folder.create(.basic(id: "B"))
         let random = folder.createRandomFile()
-        try fileManager.assertDirectoryContains(
+        fileManager.assertDirectoryContains(
             ["A.codesnippet", "B.codesnippet", random],
             at: folder.rootUrl
         )
         try manager.removeSnippets(with: .unspecified, at: folder.rootUrl)
-        try fileManager.assertDirectoryContains(
+        fileManager.assertDirectoryContains(
             ["A.codesnippet", random],
             at: folder.rootUrl
         )
         try manager.removeSnippets(with: XCSnippetFile.Tag(identifier: "A"), at: folder.rootUrl)
-        try fileManager.assertDirectoryContains(
+        fileManager.assertDirectoryContains(
             [random],
             at: folder.rootUrl
         )
@@ -120,7 +120,7 @@ final class XCSnippetFileManagerTests: XCTestCase {
         )
         destination.generate()
         try manager.copySnippets(at: folder.rootUrl, to: destination.rootUrl)
-        try fileManager.assertDirectoryContains(
+        fileManager.assertDirectoryContains(
             ["A.codesnippet", "B.codesnippet"],
             at: destination.rootUrl
         )

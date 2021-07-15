@@ -9,15 +9,21 @@ extension FileManager {
         try? createDirectory(at: url, withIntermediateDirectories: true, attributes: nil)
     }
 
-    func assertDirectoryContains(_ testFiles: [String], at url: URL) throws {
+    func assertDirectoryContains(_ testFiles: [String], at url: URL) {
+        XCTAssertTrue(directoryOnlyContains(testFiles, at: url))
+    }
+
+    func directoryOnlyContains(_ testFiles: [String], at url: URL) -> Bool {
         do {
             let urls = try FileManager.default.contentsOfDirectory(at: url)
-            print(urls)
             let fileNames = urls.map { $0.lastPathComponent }
-            XCTAssertEqual(urls.count, testFiles.count)
-            fileNames.forEach { XCTAssertTrue(testFiles.contains($0)) }
+            guard urls.count == testFiles.count else { return false }
+            for filename in fileNames {
+                guard testFiles.contains(filename) else { return false }
+            }
+            return true
         } catch {
-            XCTFail()
+            return false
         }
     }
 }

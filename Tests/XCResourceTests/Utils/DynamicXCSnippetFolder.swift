@@ -41,7 +41,7 @@ class DynamicXCSnippetFolder {
     }
 
     func snippet(named name: String) -> DynamicXCSnippetFolder.Snippet? {
-        let url = rootUrl.appendingPathComponent(name)
+        let url = rootUrl.appendingPathComponent(name).appendingPathExtension("codesnippet")
         guard let data = try? Data(contentsOf: url),
               let content = String(data: data, encoding: .utf8)
         else {
@@ -51,6 +51,22 @@ class DynamicXCSnippetFolder {
             id: url.deletingLastPathComponent().lastPathComponent,
             content: content
         )
+    }
+
+    func create(_ snippets: [Snippet]) {
+        snippets.forEach { create($0) }
+    }
+
+    func onlyContains(_ snippets: Snippet...) -> Bool {
+        let names = snippets.map { $0.id }
+        let filenames = names.map { "\($0).codesnippet" }
+        guard fileManager.directoryOnlyContains(filenames, at: rootUrl) else { return false }
+        for snippet in snippets {
+            guard let local = self.snippet(named: snippet.id), local == snippet else {
+                return false
+            }
+        }
+        return true
     }
 }
 
