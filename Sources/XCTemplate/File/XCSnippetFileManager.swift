@@ -56,61 +56,18 @@ class XCSnippetFileManager {
     // MARK: - Private
 
     private func enumerateSnippets(at url: URL) throws -> [(URL, XCSnippetFile)] {
-        try fileManager.contentsOfDirectory(at: url).compactMap { url -> (URL, XCSnippetFile)? in
-            guard url.isSnippet else { return nil }
-            let data = try Data(contentsOf: url)
-            let parser = try XCSnippetFileParser(data: data)
-            return (url, XCSnippetFile(
-                identifier: url.deletingPathExtension().lastPathComponent,
-                tag: try parser.tag()
-            ))
-        }
-    }
-}
-
-class XCSnippetCoder {
-
-    enum CodingError: Error {
-        case invalidData
-    }
-
-    func decodeSnippet(from data: Data) throws -> [String: Any] {
-        guard let file = try PropertyListSerialization.propertyList(from: data, format: nil) as? [String: Any] else {
-            throw CodingError.invalidData
-        }
-        return file
-    }
-
-    func encodeSnippet(_ snippet: [String: Any]) throws -> Data {
-        try PropertyListSerialization.data(fromPropertyList: snippet, format: .xml, options: .zero)
-    }
-}
-
-class XCSnippetFileParser {
-
-    private enum Constants {
-        static let tagKey = "XCUTILS-TAG"
-    }
-
-    enum ParsingError: Error {
-        case invalidData
-    }
-
-    private(set) var snippetContent: [String: Any]
-
-    init(data: Data) throws {
-        snippetContent = try XCSnippetCoder().decodeSnippet(from: data)
-    }
-
-    init(snippetContent: [String: Any]) {
-        self.snippetContent = snippetContent
-    }
-
-    func tag(_ tag: XCSnippetFile.Tag) throws {
-        snippetContent[Constants.tagKey] = tag == .unspecified ? nil : tag.identifier
-    }
-
-    func tag() throws -> XCSnippetFile.Tag {
-        (snippetContent[Constants.tagKey] as? String).flatMap { XCSnippetFile.Tag(identifier: $0) } ?? .unspecified
+        try fileManager.contentsOfDirectory(at: url)
+            .compactMap { url -> (URL, XCSnippetFile)? in
+                guard url.isSnippet else { return nil }
+                let data = try Data(contentsOf: url)
+                let parser = try XCSnippetFileParser(data: data)
+                return (url, XCSnippetFile(
+                    identifier: url.deletingPathExtension().lastPathComponent,
+                    tag: try parser.tag()
+                ))
+            }
+            .sorted {
+                $0.1.identifier < $1.1.identifier
+            }
     }
 }

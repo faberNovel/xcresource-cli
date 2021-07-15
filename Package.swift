@@ -6,7 +6,7 @@ import PackageDescription
 let package = Package(
     name: "XCTemplate",
     platforms: [
-        .macOS(.v10_14),
+        .macOS(.v10_15),
     ],
     products: [
         .executable(name: "xctemplate", targets: ["CLI"]),

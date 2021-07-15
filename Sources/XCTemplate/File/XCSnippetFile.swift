@@ -8,6 +8,9 @@ struct XCSnippetFile {
         let identifier: String
 
         static let unspecified = Tag(identifier: UUID().uuidString)
+        static func custom(_ id: String) -> Tag {
+            Tag(identifier: id)
+        }
     }
 
     let identifier: String

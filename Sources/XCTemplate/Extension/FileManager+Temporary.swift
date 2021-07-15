@@ -15,7 +15,7 @@ extension FileManager {
 
     func contentsOfDirectory(at url: URL) throws -> [URL] {
         try contentsOfDirectory(atPath: url.path).map {
-            URL(fileURLWithPath: $0)
+            url.appendingPathComponent($0)
         }
     }
 }

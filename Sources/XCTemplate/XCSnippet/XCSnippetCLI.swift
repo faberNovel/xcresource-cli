@@ -13,7 +13,7 @@ public class XCSnippetCLI {
 
     public func downloadSnippets(for namespace: XCSnippetNamespace,
                                  from source: XCSnippetSource) throws {
-        library.installSnippets(for: namespace, from: source)
+        try library.installSnippets(for: namespace, from: source)
     }
 
     public func removeSnippets(for namespace: XCSnippetNamespace) throws {
