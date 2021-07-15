@@ -35,7 +35,7 @@ struct InstallSnippetsCommand: ParsableCommand {
 
     public static let configuration = CommandConfiguration(
         commandName: "install",
-        abstract: "Install Xcode snippets."
+        abstract: "Install Xcode snippets from a git repository."
     )
 
     // MARK: - ParsableCommand

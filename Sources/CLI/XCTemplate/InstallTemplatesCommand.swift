@@ -41,7 +41,7 @@ struct InstallTemplatesCommand: ParsableCommand {
 
     public static let configuration = CommandConfiguration(
         commandName: "install",
-        abstract: "Install Xcode templates."
+        abstract: "Install Xcode templates from a git repository."
     )
 
     // MARK: - ParsableCommand

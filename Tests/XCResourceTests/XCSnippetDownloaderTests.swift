@@ -49,6 +49,7 @@ final class XCResourceDownloaderTests: XCTestCase {
             fileManager: fileManager
         )
         destinationFolder.generate()
+        destinationFolder.create(.tagged(id: "C", tag: "A")) // should be replaced
         try downloader.downloadSnippets(
             at: destinationURL,
             from: .git(url: originURL, reference: GitReference("master"), folderPath: "/"),

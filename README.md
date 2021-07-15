@@ -38,74 +38,50 @@ $ make install
 ```
 OVERVIEW: A Swift command-line tool to manage Xcode resources.
 
-USAGE: xctemplate <subcommand>
+USAGE: xcresource <subcommand>
 
 OPTIONS:
   -h, --help              Show help information.
 
 SUBCOMMANDS:
-  install                 Install Xcode templates.
+  template                A Swift command-line tool to manage Xcode templates.
+  snippet                 A Swift command-line tool to manage Xcode snippets.
+  ```
+
+### xcresource template
+
+```
+OVERVIEW: A Swift command-line tool to manage Xcode templates.
+
+USAGE: xcresource template <subcommand>
+
+OPTIONS:
+  -h, --help              Show help information.
+
+SUBCOMMANDS:
+  install                 Install Xcode templates from a git repository.
   remove                  Remove Xcode templates.
   list                    List Xcode templates.
   open                    Open Xcode templates folder.
-
-  See 'xctemplate help <subcommand>' for detailed help.
-  ```
-
-### xctemplate install
-
-```
-OVERVIEW: Install Xcode templates.
-
-USAGE: xcresource template install [--url <url>] [--namespace <namespace>] [--templates-path <templates-path>] [--pointer <pointer>]
-
-OPTIONS:
-  -u, --url <url>         The templates Git repository url. <url> can be a local directory path: ./src/my_template_repo (default: https://github.com/faberNovel/CodeSnippet_iOS.git)
-  -n, --namespace <namespace>
-                          Namespaces are not visible in Xcode. A namespace acts as an installation folder. The templates will be installed inside it. If the namespace already exists, it is replaced. (default: FABERNOVEL)
-  -t, --templates-path <templates-path>
-                          The templates subdirectory path inside the repository. (default: XCTemplate)
-  -p, --pointer <pointer> The targeted repo pointer (branch or tag) (default: master)
-  -h, --help              Show help information.
 ```
 
-Running `xctemplate install` installs the Fabernovel templates under the `FABERNOVEL` namespace.
+Running `xctemplate template install` installs the [Fabernovel templates](https://github.com/faberNovel/CodeSnippet_iOS/blob/master/CodeSnippet.md) under the `FABERNOVEL` namespace.
 
-### xctemplate list
-
-```
-OVERVIEW: List Xcode templates.
-
-USAGE: xcresource template list [--namespace <namespace>]
-
-OPTIONS:
-  -n, --namespace <namespace>
-                          The template namespace to list. All namespaces are listed if not specified.
-  -h, --help              Show help information.
-```
-
-### xctemplate remove
+### xctemplate snippet
 
 ```
-OVERVIEW: Remove Xcode templates.
+OVERVIEW: A Swift command-line tool to manage Xcode snippets.
 
-USAGE: xcresource template remove [--namespace <namespace>]
-
-OPTIONS:
-  -n, --namespace <namespace>
-                          The template namespace to delete. (default: FABERNOVEL)
-  -h, --help              Show help information.
-```
-
-### xctemplate open
-
-```
-OVERVIEW: Open Xcode templates folder.
-
-USAGE: xcresource template open
+USAGE: xcresource snippet <subcommand>
 
 OPTIONS:
   -h, --help              Show help information.
+
+SUBCOMMANDS:
+  install                 Install Xcode snippets from a git repository.
+  remove                  Remove Xcode snippet.
+  list                    List Xcode snippet.
+  open                    Open Xcode snippets folder.
 ```
 
 ## Contributing

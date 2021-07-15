@@ -1,2 +1,2 @@
 
-XCUtilsCommand.main()
+XCResourceCommand.main()
