@@ -9,7 +9,7 @@ let package = Package(
         .macOS(.v10_15),
     ],
     products: [
-        .executable(name: "xcresource-cli", targets: ["CLI"]),
+        .executable(name: "xcresource", targets: ["CLI"]),
         .library(name: "XCResource", targets: ["XCResource"]),
     ],
     dependencies: [

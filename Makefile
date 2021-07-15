@@ -22,7 +22,7 @@ xctemplate: $(SOURCES)
 .PHONY: install
 install: xctemplate
 	@install -d "$(bindir)"
-	@install "$(BUILDDIR)/release/xctemplate" "$(bindir)"
+	@install "$(BUILDDIR)/release/xcresource" "$(bindir)"
 
 .PHONY: uninstall
 uninstall:
