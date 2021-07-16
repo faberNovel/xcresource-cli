@@ -13,7 +13,7 @@ SOURCES = $(wildcard $(srcdir)/**/*.swift)
 .PHONY: all
 all: xcresource
 
-xctemplate: $(SOURCES)
+xcresource: $(SOURCES)
 	@swift build \
 		-c release \
 		--disable-sandbox \
