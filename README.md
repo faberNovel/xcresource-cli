@@ -44,8 +44,8 @@ OPTIONS:
   -h, --help              Show help information.
 
 SUBCOMMANDS:
-  template                A Swift command-line tool to manage Xcode templates.
-  snippet                 A Swift command-line tool to manage Xcode snippets.
+  template                A command to manage Xcode templates.
+  snippet                 A command to manage Xcode snippets.
   ```
 
 ### xcresource template
@@ -83,6 +83,8 @@ SUBCOMMANDS:
   list                    List Xcode snippet.
   open                    Open Xcode snippets folder.
 ```
+
+Running `xctemplate snippet install` installs the [Fabernovel snippets](https://github.com/faberNovel/CodeSnippet_iOS/blob/master/XcodeSnippet.md) under the FABERNOVEL namespace.
 
 ## Contributing
 
