@@ -65,7 +65,7 @@ SUBCOMMANDS:
   open                    Open Xcode templates folder.
 ```
 
-Running `xctemplate template install` installs the [Fabernovel templates](https://github.com/faberNovel/CodeSnippet_iOS/blob/master/CodeSnippet.md) under the `FABERNOVEL` namespace.
+Running `xcresource template install` installs the [Fabernovel templates](https://github.com/faberNovel/CodeSnippet_iOS/blob/master/CodeSnippet.md) under the `FABERNOVEL` namespace.
 
 ### xctemplate snippet
 
@@ -84,7 +84,7 @@ SUBCOMMANDS:
   open                    Open Xcode snippets folder.
 ```
 
-Running `xctemplate snippet install` installs the [Fabernovel snippets](https://github.com/faberNovel/CodeSnippet_iOS/blob/master/XcodeSnippet.md) under the FABERNOVEL namespace.
+Running `xcresource snippet install` installs the [Fabernovel snippets](https://github.com/faberNovel/CodeSnippet_iOS/blob/master/XcodeSnippet.md) under the FABERNOVEL namespace.
 
 ## Contributing
 
