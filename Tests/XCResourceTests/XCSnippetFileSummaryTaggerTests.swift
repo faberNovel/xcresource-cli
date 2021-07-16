@@ -24,25 +24,37 @@ final class XCSnippetFileSummaryTaggerTests: XCTestCase {
                 initialContent: "CONTENT",
                 initialTag: nil,
                 tag: "A",
-                expectedContent: "CONTENT\nNamespace: A"
+                expectedContent: "CONTENT\n\nNamespace: A"
             ),
             TagContentSample(
                 initialContent: "CONTENT Namespace: A",
                 initialTag: "A",
                 tag: "B",
-                expectedContent: "CONTENT\nNamespace: B"
+                expectedContent: "CONTENT\n\nNamespace: B"
             ),
             TagContentSample(
                 initialContent: "Namespace: A CONTENT\nNamespace: B\nNamespace: C",
                 initialTag: "A",
                 tag: "B",
-                expectedContent: "CONTENT\nNamespace: B"
+                expectedContent: "CONTENT\n\nNamespace: B"
             ),
             TagContentSample(
                 initialContent: "Namespace: A CONTENT\nNamespace: B\nNamespace: C END",
                 initialTag: "A",
                 tag: "B",
-                expectedContent: "CONTENT\nEND\nNamespace: B"
+                expectedContent: "CONTENT\nEND\n\nNamespace: B"
+            ),
+            TagContentSample(
+                initialContent: "CONTENT\n",
+                initialTag: nil,
+                tag: "B",
+                expectedContent: "CONTENT\n\nNamespace: B"
+            ),
+            TagContentSample(
+                initialContent: "CONTENT\n\n",
+                initialTag: nil,
+                tag: "B",
+                expectedContent: "CONTENT\n\nNamespace: B"
             ),
         ]
         samples.enumerated().forEach { i, sample in
