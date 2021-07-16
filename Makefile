@@ -11,7 +11,7 @@ SOURCES = $(wildcard $(srcdir)/**/*.swift)
 .DEFAULT_GOAL = all
 
 .PHONY: all
-all: xctemplate
+all: xcresource
 
 xctemplate: $(SOURCES)
 	@swift build \
@@ -20,10 +20,10 @@ xctemplate: $(SOURCES)
 		--build-path "$(BUILDDIR)"
 
 .PHONY: install
-install: xctemplate
+install: xcresource
 	@install -d "$(bindir)"
-	@install "$(BUILDDIR)/release/xctemplate" "$(bindir)"
+	@install "$(BUILDDIR)/release/xcresource" "$(bindir)"
 
 .PHONY: uninstall
 uninstall:
-	@rm -rf "$(bindir)/xctemplate"
+	@rm -rf "$(bindir)/xcresource"

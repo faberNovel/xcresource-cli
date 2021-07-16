@@ -1,2 +1,2 @@
 
-XCTemplateCommand.main()
+XCResourceCommand.main()

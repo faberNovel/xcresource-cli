@@ -1,6 +1,6 @@
 import XCTest
 
-import XCTemplateTests
+import XCResourceTests
 
 var tests = [XCTestCaseEntry]()
 tests += XCTemplateInstallerTests.allTests()
