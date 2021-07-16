@@ -23,8 +23,8 @@ class XCSnippetFileSummaryTagger {
 
     func tag(_ content: String, tag: String) -> String {
         var result = clearTags(content)
-        if !result.isEmpty && !result.hasSuffix("\n") {
-            result += "\n"
+        if !result.isEmpty && !result.hasSuffix("\n\n") {
+            result += result.hasSuffix("\n") ? "\n" : "\n\n"
         }
         result += "\(marker)\(tag)"
         return result
