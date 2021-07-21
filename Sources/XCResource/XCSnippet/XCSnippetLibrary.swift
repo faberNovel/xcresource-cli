@@ -3,6 +3,7 @@ import Foundation
 
 public class XCSnippetLibrary {
 
+    private let fileManager: FileManager
     private let snippetFileManager: XCSnippetFileManager
     private let downloader: XCSnippetsDownloader
     private let urlProvider: XCSnippetFolderURLProviding
@@ -10,21 +11,25 @@ public class XCSnippetLibrary {
     // MARK: - Life Cycle
 
     public convenience init() {
-        let snippetFileManager = XCSnippetFileManager(fileManager: .default)
+        let fileManager = FileManager.default
+        let snippetFileManager = XCSnippetFileManager(fileManager: fileManager)
         self.init(
+            fileManager: fileManager,
             snippetFileManager: snippetFileManager,
             downloader: XCSnippetsDownloader(
-                fileManager: .default,
+                fileManager: fileManager,
                 snippetFileManager: snippetFileManager,
-                strategyFactory: XCSnippetDownloadingStrategyFactory(fileManager: .default)
+                strategyFactory: XCSnippetDownloadingStrategyFactory(fileManager: fileManager)
             ),
             urlProvider: NativeNamespaceFolderURLProvider()
         )
     }
 
-    internal init(snippetFileManager: XCSnippetFileManager,
+    internal init(fileManager: FileManager,
+                  snippetFileManager: XCSnippetFileManager,
                   downloader: XCSnippetsDownloader,
                   urlProvider: XCSnippetFolderURLProviding) {
+        self.fileManager = fileManager
         self.snippetFileManager = snippetFileManager
         self.downloader = downloader
         self.urlProvider = urlProvider
@@ -34,8 +39,10 @@ public class XCSnippetLibrary {
 
     public func installSnippets(for namespace: XCSnippetNamespace,
                                 from source: XCSnippetSource) throws {
+        let destination = urlProvider.rootSnippetFolderURL()
+        try? fileManager.createDirectory(at: destination, withIntermediateDirectories: true, attributes: nil)
         try downloader.downloadSnippets(
-            at: urlProvider.rootSnippetFolderURL(),
+            at: destination,
             from: source,
             namespace: namespace
         )
