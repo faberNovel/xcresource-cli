@@ -19,13 +19,7 @@ struct ListTemplatesCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        let folder: XCTemplateFolder
-        let cli = XCTemplateCLI()
-        if let namespace = namespace {
-            folder = try cli.templateFolder(for: XCTemplateNamespace(namespace))
-        } else {
-            folder = try cli.rootTemplateFolder()
-        }
+        let folder = try XCTemplateCLI().templateFolder(namespace: namespace)
         if folder.isEmpty() {
             print("No templates installed")
         } else {

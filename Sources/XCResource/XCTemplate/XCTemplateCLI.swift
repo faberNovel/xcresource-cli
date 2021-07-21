@@ -3,67 +3,54 @@ import Foundation
 
 public class XCTemplateCLI {
 
-    private let fileManager: XCTemplateFileManager
-    private let downloader: XCTemplatesDownloader
-    private let urlProvider: XCTemplateFolderURLProviding
+    enum Error: Swift.Error {
+        case invalidURL
+    }
+
+    private let templateLibrary: XCTemplateLibrary
 
     // MARK: - Life Cycle
 
-    internal init(fileManager: XCTemplateFileManager,
-                  downloader: XCTemplatesDownloader,
-                  urlProvider: XCTemplateFolderURLProviding) {
-        self.fileManager = fileManager
-        self.downloader = downloader
-        self.urlProvider = urlProvider
-    }
-
-    public convenience init() {
-        let fileManager = XCTemplateFileManager(
-            fileManager: .default
-        )
-        self.init(
-            fileManager: fileManager,
-            downloader: XCTemplatesDownloader(
-                factory: XCTemplateFolderDownloadingStrategyFactory(
-                    fileManager: .default,
-                    templateManager: fileManager
-                )
-            ),
-            urlProvider: NativeNamespaceFolderURLProvider()
-        )
+    public init() {
+        self.templateLibrary = XCTemplateLibrary()
     }
 
     // MARK: - Public
 
-    public func downloadTemplates(for namespace: XCTemplateNamespace,
-                                  from source: XCTemplateSource) throws {
-        try downloader.downloadTemplates(
-            at: url(for: namespace),
-            from: source
+    public func downloadTemplates(url: String,
+                                  pointer: String,
+                                  namespace: String,
+                                  templatesPath: String) throws -> XCTemplateFolder {
+        guard let url = URL(string: url) else {
+            throw Error.invalidURL
+        }
+        let templateNamespace = XCTemplateNamespace(namespace)
+        try templateLibrary.downloadTemplates(
+            for: templateNamespace,
+            from: .git(
+                url: url,
+                reference: GitReference(pointer),
+                folderPath: templatesPath
+            )
         )
+        return try templateLibrary.templateFolder(for: templateNamespace)
     }
 
-    public func removeTemplates(for namespace: XCTemplateNamespace) throws {
-        try fileManager.removeTemplateFolder(at: url(for: namespace))
+    public func removeTemplates(namespace: String) throws {
+        try templateLibrary.removeTemplates(for: XCTemplateNamespace(namespace))
     }
 
-    public func rootTemplateFolder() throws -> XCTemplateFolder {
-        let folder = try fileManager.templateFolder(at: urlProvider.rootTemplateURL())
-        return XCTemplateFolderMapper().map(folder)
-    }
-
-    public func templateFolder(for namespace: XCTemplateNamespace) throws -> XCTemplateFolder {
-        let folder = try fileManager.templateFolder(at: url(for: namespace))
-        return XCTemplateFolderMapper().map(folder)
+    public func templateFolder(namespace: String?) throws -> XCTemplateFolder {
+        let folder: XCTemplateFolder
+        if let namespace = namespace {
+            folder = try templateLibrary.templateFolder(for: XCTemplateNamespace(namespace))
+        } else {
+            folder = try templateLibrary.rootTemplateFolder()
+        }
+        return folder
     }
 
     public func openRootTemplateFolder() throws {
-        try Shell().execute(.open(path: urlProvider.rootTemplateURL().path))
-    }
-
-    // MARK: - Private
-
-    private func url(for namespace: XCTemplateNamespace) -> URL {
-        urlProvider.url(for: namespace)
+        try Shell().execute(.open(path: templateLibrary.rootTemplateFolderURL().path))
     }
 }

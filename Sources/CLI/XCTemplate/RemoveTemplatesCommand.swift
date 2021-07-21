@@ -19,6 +19,6 @@ struct RemoveTemplatesCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        try XCTemplateCLI().removeTemplates(for: XCTemplateNamespace(namespace))
+        try XCTemplateCLI().removeTemplates(namespace: namespace)
     }
 }

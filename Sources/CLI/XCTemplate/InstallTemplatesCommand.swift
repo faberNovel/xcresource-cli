@@ -47,20 +47,12 @@ struct InstallTemplatesCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        guard let url = URL(string: url) else {
-            throw Error.invalidURL
-        }
-        let templateNamespace = XCTemplateNamespace(namespace)
-        let cli = XCTemplateCLI()
-        try cli.downloadTemplates(
-            for: templateNamespace,
-            from: .git(
-                url: url,
-                reference: GitReference(pointer),
-                folderPath: templatesPath
-            )
+        let folder = try XCTemplateCLI().downloadTemplates(
+            url: url,
+            pointer: pointer,
+            namespace: namespace,
+            templatesPath: templatesPath
         )
-        let folder = try cli.templateFolder(for: templateNamespace)
         print("\(folder.templateCount()) templates successfully installed 🎉")
     }
 }
