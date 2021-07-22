@@ -8,6 +8,7 @@ All notable changes to this project will be documented in this file.
 ### Fixed
 
 - Fixed relative URL parameters #7
+- Fixed empty code snippets folder #11
 
 ### Updated
 
