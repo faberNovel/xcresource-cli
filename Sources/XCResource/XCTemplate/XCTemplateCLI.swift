@@ -3,10 +3,6 @@ import Foundation
 
 public class XCTemplateCLI {
 
-    public enum Error: Swift.Error {
-        case invalidURL
-    }
-
     private let templateLibrary: XCTemplateLibrary
 
     // MARK: - Life Cycle
