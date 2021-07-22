@@ -17,16 +17,16 @@ public class XCTemplateLibrary {
         self.urlProvider = urlProvider
     }
 
-    public convenience init() {
-        let fileManager = XCTemplateFileManager(
-            fileManager: .default
+    public convenience init(fileManager: FileManager = .default) {
+        let templateManager = XCTemplateFileManager(
+            fileManager: fileManager
         )
         self.init(
-            fileManager: fileManager,
+            fileManager: templateManager,
             downloader: XCTemplatesDownloader(
                 factory: XCTemplateFolderDownloadingStrategyFactory(
-                    fileManager: .default,
-                    templateManager: fileManager
+                    fileManager: fileManager,
+                    templateManager: templateManager
                 )
             ),
             urlProvider: NativeNamespaceFolderURLProvider()

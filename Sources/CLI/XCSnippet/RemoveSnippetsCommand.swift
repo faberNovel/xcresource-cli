@@ -19,7 +19,6 @@ struct RemoveSnippetsCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        let cli = XCSnippetCLI()
-        try cli.removeSnippets(namespace: namespace)
+        try XCSnippetCLI().removeSnippets(namespace: namespace)
     }
 }

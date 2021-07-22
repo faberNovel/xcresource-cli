@@ -10,8 +10,7 @@ public class XCSnippetLibrary {
 
     // MARK: - Life Cycle
 
-    public convenience init() {
-        let fileManager = FileManager.default
+    public convenience init(fileManager: FileManager = .default) {
         let snippetFileManager = XCSnippetFileManager(fileManager: fileManager)
         self.init(
             fileManager: fileManager,
