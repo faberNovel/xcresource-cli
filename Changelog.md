@@ -12,6 +12,7 @@ All notable changes to this project will be documented in this file.
 
 ### Updated
 
+- Updated `xcresource snippet remove`: it can not delete custom snippets
 - Updated CLI messages
 
 ## [0.1.2]
