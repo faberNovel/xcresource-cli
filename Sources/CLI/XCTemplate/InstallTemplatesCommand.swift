@@ -53,6 +53,6 @@ struct InstallTemplatesCommand: ParsableCommand {
             namespace: namespace,
             templatesPath: templatesPath
         )
-        print("\(folder.templateCount()) templates successfully installed 🎉")
+        print("🎉 \(folder.templateCount()) templates successfully installed")
     }
 }

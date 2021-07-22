@@ -20,14 +20,6 @@ struct RemoveSnippetsCommand: ParsableCommand {
 
     func run() throws {
         let cli = XCSnippetCLI()
-        if let namespace = namespace {
-            let xcnamespace = XCSnippetNamespace(namespace)
-            try cli.removeSnippets(for: xcnamespace)
-        } else {
-            let namespaces = try cli.snippetNamespaces()
-            try namespaces.forEach { namespace in
-                try cli.removeSnippets(for:namespace)
-            }
-        }
+        try cli.removeSnippets(namespace: namespace)
     }
 }
