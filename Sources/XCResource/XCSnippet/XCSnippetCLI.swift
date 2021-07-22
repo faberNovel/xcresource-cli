@@ -33,7 +33,7 @@ public class XCSnippetCLI {
             let xcnamespace = XCSnippetNamespace(namespace)
             try library.removeSnippets(for: xcnamespace)
         } else {
-            let namespaces = try library.snippetNamespaces()
+            let namespaces = try library.snippetNamespaces().filter { $0 != .xcodeDefault }
             try namespaces.forEach { namespace in
                 try library.removeSnippets(for:namespace)
             }
