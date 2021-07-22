@@ -42,9 +42,9 @@ struct GitSourceDownloadingStrategy: XCTemplateFolderDownloadingStrategy {
         }
         try Shell().execute(
             .gitDownload(
-                url: url.absoluteString,
+                url: url.path,
                 reference: reference,
-                destination: tmp.absoluteString
+                destination: tmp.path
             )
         )
         let folder = try templateManager.templateFolder(at: tmp.appendingPathComponent(folderPath))
