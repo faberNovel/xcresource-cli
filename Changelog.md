@@ -3,6 +3,16 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.1.3]
+
+### Fixed
+
+- Fixed relative URL parameters #7
+
+### Updated
+
+- Updated CLI messages
+
 ## [0.1.2]
 
 ### Updated
