@@ -41,14 +41,13 @@ struct InstallSnippetsCommand: ParsableCommand {
     // MARK: - ParsableCommand
 
     func run() throws {
-        guard let url = URL(string: url) else { throw Error.invalidURL }
-        try XCSnippetCLI().downloadSnippets(
-            for: .init(namespace),
-            from: .git(
-                url: url,
-                reference: GitReference(pointer),
-                folderPath: snippetsPath
-            )
+        let cli = XCSnippetCLI()
+        let list = try cli.installSnippets(
+            url: url,
+            pointer: pointer,
+            namespace: namespace,
+            snippetsPath: snippetsPath
         )
+        print("🎉 \(list.snippets.count) snippets successfully installed")
     }
 }

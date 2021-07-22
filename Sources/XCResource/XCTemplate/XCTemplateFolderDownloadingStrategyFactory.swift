@@ -41,7 +41,11 @@ struct GitSourceDownloadingStrategy: XCTemplateFolderDownloadingStrategy {
             try? fileManager.removeItem(at: tmp)
         }
         try Shell().execute(
-            .gitDownload(url: url.absoluteString, reference: reference, destionation: tmp.path)
+            .gitDownload(
+                url: url.path,
+                reference: reference,
+                destination: tmp.path
+            )
         )
         let folder = try templateManager.templateFolder(at: tmp.appendingPathComponent(folderPath))
         try? fileManager.removeItem(at: destination)

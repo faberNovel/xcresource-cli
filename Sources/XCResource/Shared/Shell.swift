@@ -12,7 +12,7 @@ public struct GitReference {
 
 enum ShellCommand {
     case open(path: String)
-    case gitDownload(url: String, reference: GitReference, destionation: String)
+    case gitDownload(url: String, reference: GitReference, destination: String)
 }
 
 class Shell {
