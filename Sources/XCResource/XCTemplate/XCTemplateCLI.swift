@@ -3,7 +3,7 @@ import Foundation
 
 public class XCTemplateCLI {
 
-    enum Error: Swift.Error {
+    public enum Error: Swift.Error {
         case invalidURL
     }
 
@@ -21,9 +21,7 @@ public class XCTemplateCLI {
                                   pointer: String,
                                   namespace: String,
                                   templatesPath: String) throws -> XCTemplateFolder {
-        guard let url = URL(string: url) else {
-            throw Error.invalidURL
-        }
+        let url = try URLInputParser().absoluteURL(fromInput: url)
         let templateNamespace = XCTemplateNamespace(namespace)
         try templateLibrary.downloadTemplates(
             for: templateNamespace,
