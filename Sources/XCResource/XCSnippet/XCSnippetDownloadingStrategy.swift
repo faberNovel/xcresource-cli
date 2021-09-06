@@ -41,7 +41,7 @@ struct GitSourceSnippetDownloadingStrategy: XCSnippetDownloadingStrategy {
             try? fileManager.removeItem(at: tmp)
         }
         try Shell().execute(
-            .gitDownload(url: url.absoluteString, reference: reference, destination: tmp.path)
+            .gitDownload(url: url, reference: reference, destination: tmp)
         )
         let snippetsDirectoryURL = tmp.appendingPathComponent(folderPath)
         let snippetURLs = try fileManager.contentsOfDirectory(at: snippetsDirectoryURL)
