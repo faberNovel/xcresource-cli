@@ -12,7 +12,7 @@ public struct GitReference {
 
 enum ShellCommand {
     case open(path: String)
-    case gitDownload(url: String, reference: GitReference, destination: String)
+    case gitDownload(url: URL, reference: GitReference, destination: URL)
 }
 
 class Shell {
@@ -56,9 +56,20 @@ private extension ShellCommand {
     func shell() -> String {
         switch self {
         case let .gitDownload(url, reference, destination):
-            return "git clone -b '\(reference.name)' --single-branch --depth 1 \(url) \(destination)"
+            return "git clone -b '\(reference.name)' --single-branch --depth 1 \(url.toString()) \(destination.toString())"
         case let .open(path):
             return "open \(path)"
+        }
+    }
+}
+
+private extension URL {
+
+    func toString() -> String {
+        if isFileURL {
+            return path // we remove the file: prefix
+        } else {
+            return absoluteString
         }
     }
 }
